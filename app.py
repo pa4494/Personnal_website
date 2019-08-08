@@ -110,7 +110,13 @@ def bivariate():
     dic_graphs = {}
     nb_graphs = 0
     nb_options = 0
+    x_list =[]
+    y_list =[]
     code = "<p> # Import all relevant libraries </p>"
+
+    # Dictionnary containing graph functions associated with drop-down list
+    dic_func = {"scatterplot": sns.scatterplot,
+                "barplot": sns.barplot}
 
     # If no csv file has been uploaded, we redirect to the upload page
     if not session.get("file_path"):
@@ -123,35 +129,39 @@ def bivariate():
 
         if request.method == "POST":
 
-            # Dictionnary containing graph functions associated with radio buttons
-            dic_func = {"distplot" : sns.distplot,
-                        "countplot" : sns.countplot}
-
             # After user submits button radio form with choice of variable to plot on graph, each of the radio button's value becomes a dictionary key and to each key is associated
             # a list of the column names the user wants to plot
-            for column in dataset.columns:
-                dic_graphs[request.form[column]] = dic_graphs.get(request.form[column], []) + [column]
+            for var_nb in range(nb_options):
+                var_x = "var_x_" + str(var_nb)
+                var_y = "var_y_" + str(var_nb)
+                choice_x = request.form.get(var_x)
+                choice_y = request.form.get(var_y)
+                if choice_x != "":
+                    x_list.append(choice_x)
+                if choice_y != "":
+                    y_list.append(choice_y)
 
             # We create a subplots figures that automatically resize based on the number of graphs we want to show
             nb_columns = 3
-            graphs_to_show = len(dataset.columns) - len(dic_graphs.get("none",[]))
+            graphs_to_show = len(x_list) * len(y_list)
             nb_rows = int(graphs_to_show/nb_columns -0.0000001) + 1
             width_fig = 12
             f, axis = plt.subplots(nrows = nb_rows, ncols = nb_columns, figsize=(width_fig, width_fig/nb_columns*nb_rows))
             ax = list(axis.flat)
 
             # For all the columns that the user wants to see a graph, we plot a graph based on the radio button's value
-            for key in dic_graphs.keys():
-                if key != "none":
-                    for column in dic_graphs.get(key):
-                        dic_func[key](dataset[column], ax=ax[nb_graphs])
-                        nb_graphs+=1
-                        code+="<P> sns.{}(dataset[{}]))</P>".format(dic_func[key].__name__,column)
+            graph_choice = dic_func[request.form.get("graph_type")]
+
+            for x in x_list :
+                for y in y_list:
+                    graph_choice(x = x, y=y, data=dataset, ax=ax[nb_graphs])
+                    nb_graphs+=1
+                    code+="<P> sns.{graph_choice}(x = {x}, y={y}, data=dataset]))</P>".format(graph_choice = graph_choice.__name__, x=x, y=y)
 
             # We save the figure containing all the graph
             f.savefig('static/images/graph_bivariate.png')
 
-        response = make_response(render_template("bivariate.html", dataset = dataset, nb_options = nb_options, table_head = table_head, dic_graphs = dic_graphs, nb_graphs = nb_graphs, code = code))
+        response = make_response(render_template("bivariate.html", dataset = dataset, nb_options = nb_options, table_head = table_head, dic_graphs = dic_graphs, dic_func= dic_func, nb_graphs = nb_graphs, code = code))
         return response
 
 @app.route('/supervised_ML', methods = ["GET", "POST"])

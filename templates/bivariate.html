@@ -1,28 +1,29 @@
 {% extends "layout_visualisation.html" %}
 
     {% block form %}
-    <p>
-        <label for graph_type> Choose graph type </label>
-            <select name="graph_type">
-                {% for graph in ["scatterplot", "pointplot_logistic", "countplot"] %}
-                    <option value="{{graph}}">{{graph}}</option>
-                {% endfor %}
-            </select>
-    </p>
 
-        <label for var_a_1> x axis vars | </label> <label for var_b_1> y axis vars |  </label>
+    {{ request.form.get("var_x_0") }}
+        <p>
+            <label for graph_type> Choose graph type </label>
+                <select name="graph_type">
+                    {% for graph in dic_func.keys() %}
+                        <option value="{{graph}}">{{graph}}</option>
+                    {% endfor %}
+                </select>
+        </p>
 
-        {% for nb_row in range(0, nb_options) %}
+        <label for var_x_1> x axis vars | </label> <label for var_y_1> y axis vars |  </label>
+
+        {% for nb_row in range(nb_options) %}
             <p>
                 {% for var in ["var_x_","var_y_"] %}
                     <select name="{{var}}{{nb_row}}">
-                            <option selected></option>
-                            {% for column in dataset.columns %}
-                            <option value="{{column}}">{{column}}</option>
-                            {% endfor %}
+                        <option selected></option>
+                        {% for column in dataset.columns %}
+                        <option value="{{column}}">{{column}}</option>
+                        {% endfor %}
                     </select>
                 {% endfor %}
-
              </p>
          {% endfor %}
     {% endblock form %}
