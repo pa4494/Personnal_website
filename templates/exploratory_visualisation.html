@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<!-- If the user uploaded a csv file -->
+{% if table is not none %}
+
+<!-- We show the first ten rows of the table -->
+<p>
+{{ table.head(10).to_html() | safe }}
+</p>
+
+<!-- We ask the user which variables he would like to see in a scatterplot -->
+<!-- request.path allows to indicate the url of current page in which we used POST -->
+
+<form method="post" action={{request.path}} t>
+    <select name="cars">
+      <option value="colonne1">Colonne1</option>
+      <option value="colonne2">Colonne2</option>
+    </select>
+    <input type="submit" value="affiche_input">
+</form>
+
+<img src="static/images/output.png">
+{% endif %}
+
+{% endblock content %}
+
+

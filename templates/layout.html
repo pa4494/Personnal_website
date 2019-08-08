@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> The Data Scientist tool - {{name}} </title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<body>
+
+		<!-- We show an upload button only for selected templates -->
+	    {% if self._TemplateReference__context.name in list_with_upload %}
+
+		<form method="post" action={{request.path}} enctype="multipart/form-data">
+			<label for="dataset"> Choose a csv file: </label>
+			<input type="file" id="dataset" name="csv_file" accept=".csv">
+			<input type="submit" value="Submit Choice">
+		</form>
+		{% endif %}
+
+	{% block content %}
+	
+	{% endblock content %}
+	</body>
+</html>
+
+
