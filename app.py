@@ -19,6 +19,36 @@ UPLOAD_FOLDER = "static/images"
 ALLOWED_EXTENSIONS = set(['txt', 'csv', 'png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+from sklearn.linear_model import LinearRegression, LogisticRegression, Lasso, Ridge
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
+
+dic_models = {"Linear_Regression" : LinearRegression,
+              "Logistic_Regression" : LogisticRegression,
+              "Lasso_Regression" : Lasso,
+              "Ridge_Regression" : Ridge,
+              "DecisionTree" : DecisionTreeClassifier,
+              "Gaussian_Naive_bayes" : GaussianNB,
+              "Support_Vector_Machine" : SVC
+              }
+
+list_dummy = ["Logistic_Regression",
+            "Lasso_Regression" ,
+            "Ridge_Regression" ,
+            "Gaussian_Naive_bayes" ,
+            "Support_Vector_Machine"]
+
+list_norm = ["Logistic_Regression",
+            "Lasso_Regression" ,
+            "Ridge_Regression" ,
+            "DecisionTree" ,
+            "Gaussian_Naive_bayes" ,
+            "Support_Vector_Machine"]
+
+
+
 # Functions we want to use in html template using jinja2
 @app.context_processor
 def utility_processor():
@@ -166,8 +196,61 @@ def bivariate():
 
 @app.route('/supervised_ML', methods = ["GET", "POST"])
 def supervised_ML():
-    variable = pd.read_csv(session["file_path"])
-    return render_template("supervised_ML.html", name = "Supervised Machine Learning", variable = variable)
+
+    code =""
+    table_head=""
+    has_null = False
+    list_models = {"Linear Regression": "reg", "Logistic Regression" : "Log"}
+
+    # If no csv file has been uploaded, we redirect to the upload page
+    if not session.get("file_path"):
+        return redirect(url_for("upload"))
+
+    else:
+        dataset = pd.read_csv(session["file_path"])
+        detail_null = dataset.isnull().sum()
+        if sum(detail_null) > 0:
+            has_null =True
+
+        code+="<p> dataset = pd.read_csv({})</p>".format(Path(session["file_path"]).name)
+        table_head = dataset.head(10).to_html()
+
+        if request.method == "POST":
+
+            # We delete columns based on user's choice
+            for column in list(request.form.getlist("delete")):
+                dataset.drop(column, axis=1, inplace=True)
+
+            # We treat null values
+            if request.form.get("treat_null") =="remove_rows":
+                dataset.dropna(axis=0, inplace=True)
+            else:
+                dataset.interpolate(method = "nearest", inplace= True)
+
+            # We dummify categorical variables
+            if request.form.get("model") in list_dummy:
+                dataset_preprocessed = pd.get_dummies(dataset, drop_first=True)
+
+            # We split dataset between X and y
+            y = dataset[request.form.get("target")]
+            X = dataset.drop(request.form.get("target"), axis=1)
+
+            # We split the dataset between train and test
+            from sklearn.model_selection import train_test_split
+            X_train, X_test, y_train, y_test = train_test_split(X, y,
+                                                                test_size=0.2,
+                                                                random_state=0,
+                                                                stratify=y) #ATTENTION. IF y has at least one class with a unique entry this will return an error
+            # We normalise
+            if request.form.get("model") in list_norm:
+                from sklearn.preprocessing import StandardScaler
+                sc_X = StandardScaler
+                X_train = sc_X.fit_transform(X_train)
+                X_test = sc_X.transform(X_test)
+
+            # THEN WE SAVE EVERYTHING AND SEND USER ON NEXT PAGE WHERE HE CAN REFINE PARAMETERS OF THE MODEL
+
+    return render_template("supervised_ML.html", dataset = dataset, table_head = table_head, has_null = has_null, detail_null = detail_null, list_models = list_models, dic_models = dic_models)
 
 @app.route("/test_html", methods = ["GET", "POST"])
 def test_html():

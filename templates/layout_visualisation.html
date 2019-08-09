@@ -1,6 +1,19 @@
-{% extend "base_layout.html" %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> The Data Scientist tool - {{name}} </title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+	</head>
+	<body>
 
-{% block main %}
+    <p> The current file uploaded is : "{{name_file(session["file_path"])}}" </p>
+    <p> {{table_head | safe }}</p>
+
+    <!-- app.py redirect automatically to upload page if no csv file has been uploaded
+         Here we will create the form to choose column in the dataset to draw univariate graph from -->
 
 	<form method="post" action={{request.path}} enctype="multipart/form-data">
 		{% block form %}
@@ -19,4 +32,5 @@
 			</code>
 	</figure>
 
-{% endblock main %}
+	</body>
+</html>
