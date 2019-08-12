@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Model : {{model}}
+
+<p> Score on train is {{ model.score(X_train, y_train) }}</p>
+<p> Score on test is  {{ model.score(X_test, y_test) }} </p>
+prediction on train is {{ model.predict(X_train) }}
+
+</body>
+</html>

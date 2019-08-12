@@ -1,7 +1,9 @@
 {% extends "layout_visualisation.html" %}
 
         {% block form %}
-            {% for column in dataset.columns %}
+            <form method="post" action={{request.path}} enctype="multipart/form-data">
+                <h4> Please pick the type of graphs you would like to show </h4>
+                {% for column in dataset.columns %}
 
                 <!-- We want to prevent the user to use Distplot which won't work on non numeric variables -->
                 {% if is_numeric(dataset[column]) == false %}
@@ -9,16 +11,19 @@
                 {% else %}
                     {% set disabled = "" %}
                 {% endif %}
-            <p>
-                <label> {{column}} - ({{dataset[column].dtype}}) </label>
-                <input type="radio" name={{column}} value="none" checked>
-                <label for="None">None </label>
-                <input type="radio" name={{column}} value="distplot" {{ disabled | safe}} >
-                <label for="Distplot" {{ disabled | safe}} >Distplot</label>
-                <input type="radio" name={{column}} value="countplot">
-                <label for="Countplot">Countplot</label>
-            </p>
+
+                <p>
+                    <input type="radio" name="{{column}}" value="none" checked>
+                    <label for="None">None </label>
+                    <input type="radio" name="{{column}}" value="distplot" {{ disabled | safe}} >
+                    <label for="Distplot" {{ disabled | safe}} >Distplot</label>
+                    <input type="radio" name="{{column}}" value="countplot">
+                    <label for="Countplot">Countplot</label>
+                    <label> | --  {{column}} - ({{dataset[column].dtype}}) </label>
+                </p>
             {% endfor %}
+            <p> <input type="submit" value="Validate Selection"> </p>
+	        </form>
         {% endblock form %}
 
         {% block image %}

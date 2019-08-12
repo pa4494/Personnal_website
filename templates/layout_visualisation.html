@@ -15,14 +15,14 @@
     <!-- app.py redirect automatically to upload page if no csv file has been uploaded
          Here we will create the form to choose column in the dataset to draw univariate graph from -->
 
-	<form method="post" action={{request.path}} enctype="multipart/form-data">
-		{% block form %}
-		{% endblock form %}
-		<p> <input type="submit" value="Validate Selection"> </p>
-	</form>
+	{% block form %}
+	{% endblock form %}
 
-	{% block image %}
-	{% endblock image %}
+
+	{% if request.method == "POST" %}
+		{% block image %}
+		{% endblock image %}
+	{% endif %}
 
 	<figure>
 	<figcaption> Code </figcaption>

@@ -1,7 +1,7 @@
 {% extends "layout_visualisation.html" %}
 
 {% block form %}
-
+    <form method="post" action= {{url_for("model_parameters")}} enctype="multipart/form-data">
     {% if has_null == True %}
         Your dataset contains null values. You cannot keep NaN values when using Machine learning algorithms. Here are the details :
         {% for column in detail_null[detail_null >0].index %}
@@ -14,8 +14,8 @@
 
     {% for column in dataset.columns %}
         <p>
+            <input type="checkbox" name=delete value="{{column}}">
             <label> {{column}} </label>
-            <input type="checkbox" name=delete value={{column}}>
         </p>
     {% endfor %}
 
@@ -40,6 +40,7 @@
             <option value="{{column}}">{{column}}</option>
             {% endfor %}
        </select>
-
+        <p> <input type="submit" value="Validate Selection"> </p>
+    </form>
 {% endblock form %}
 

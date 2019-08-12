@@ -1,0 +1,17 @@
+{% extends "layout_visualisation.html" %}
+
+	{% block form %}
+        <p> Please adjust model parameters </p>
+            <form method="post" action={{url_for("result_model")}} enctype="multipart/form-data">
+                {% for arg, value in list_params %}
+                <p> <input type="text" name="{{arg}}" value="{{value}}"> : {{arg}}  </p>
+                {% endfor %}
+                <input type="submit" value="Validate Selection">
+            </form>
+
+        <h3> Function help and details of arguments </h3>
+        {% for line in help_model %}
+            {{line}} <br>
+        {% endfor %}
+
+	{% endblock form %}
