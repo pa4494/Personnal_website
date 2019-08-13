@@ -6,10 +6,14 @@
 </head>
 <body>
 Model : {{model}}
-
+<p>{{ test }}</p>
 <p> Score on train is {{ model.score(X_train, y_train) }}</p>
 <p> Score on test is  {{ model.score(X_test, y_test) }} </p>
-prediction on train is {{ model.predict(X_train) }}
 
+<h3> Classification report on train </h3>
+<p> {{report_train | safe}}</p>
+<h3> Classification report on test </h3>
+<p> {{report_test | safe}}</p>
+<img src="static/images/confusion_matrix.png">
 </body>
 </html>

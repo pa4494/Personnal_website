@@ -9,7 +9,8 @@ import os
 from pathlib import Path
 import matplotlib.pyplot as plt
 import inspect
-import pprint
+from fastnumbers import fast_real
+import numpy as np
 import csv
 
 app = Flask(__name__)
@@ -28,6 +29,9 @@ from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 
 dic_models = {"Linear_Regression" : LinearRegression,
               "Logistic_Regression" : LogisticRegression,
@@ -41,28 +45,32 @@ dic_models = {"Linear_Regression" : LinearRegression,
               "Support_Vector_Machine" : SVC
               }
 
-list_dummy = ["Linear_Regression",
-              "Logistic_Regression",
-              "Lasso_Regression" ,
-              "Ridge_Regression" ,
-              "Gaussian_Naive_bayes" ,
-              "Support_Vector_Machine"]
+list_label_encoder = ["Decision_Tree_Regressor",
+                      "Random_Forest_Regressor",
+                      "Decision_Tree_Classifier",
+                      "Random_Forest_Classifier"]
+
+list_dummy_drop_true = ["Linear_Regression",
+                        "Logistic_Regression",
+                        "Lasso_Regression",
+                        "Ridge_Regression"]
+
+list_dummy_drop_false =["Gaussian_Naive_bayes",
+                        "Support_Vector_Machine"]
 
 list_norm = ["Logistic_Regression",
              "Lasso_Regression" ,
              "Ridge_Regression" ,
-             "Decision_Tree" ,
-             "Gaussian_Naive_bayes" ,
              "Support_Vector_Machine"]
 
 list_regr = ["Linear_Regression",
-             "Logistic_Regression",
              "Lasso_Regression",
              "Ridge_Regression",
              "Decision_Tree_Regressor",
              "Random_Forest_Regressor"]
 
-list_classif = ["Decision_Tree_Classifier",
+list_classif = ["Logistic_Regression",
+                "Decision_Tree_Classifier",
                 "Random_Forest_Classifier",
                 "Gaussian_Naive_bayes",
                 "Support_Vector_Machine"]
@@ -241,6 +249,9 @@ def model_parameters():
     IP_address_user_= "A_DEFINIR"
     dataset = pd.read_csv(session["file_path"])
     help_model = dic_models[session["model"]].__doc__.split('\n')
+    session["le_y"] = ""
+    session["le_X"] = {}
+
     # We delete columns based on user's choice
     for column in request.form.getlist("delete"):
         dataset.drop(column, axis=1, inplace=True)
@@ -251,24 +262,37 @@ def model_parameters():
     else:
         dataset.interpolate(method="nearest", inplace=True)
 
-    # We make sure target is expressed as a number
-    if not is_numeric_dtype(dataset[request.form.get("target")]):
-        print("APPLY ONE HOT ENCODER AND KEEP TABLE OF CORRESPONDING VALUE IN A TABLE")
-
-    # We dummify categorical variables
-    if request.form.get("model") in list_dummy:
-        dataset = pd.get_dummies(dataset, drop_first=True)
-
     # We split dataset between X and y
-    y = dataset[request.form.get("target")]
+    y = pd.DataFrame(dataset[request.form.get("target")], columns = [request.form.get("target")])
     X = dataset.drop(request.form.get("target"), axis=1)
+
+    # We make sure target is expressed as a number
+    if not is_numeric_dtype(y):
+        le = LabelEncoder()
+        y = pd.DataFrame(le.fit_transform(y.astype(str)), columns=[request.form.get("target")])
+        session["le_y"] = list(le.classes_)
+
+    # We dummify categorical variables or label encode them based on model used
+    if request.form.get("model") in list_dummy_drop_true:
+        X = pd.get_dummies(X, drop_first=True)
+
+    if request.form.get("model") in list_dummy_drop_false:
+        X =pd.get_dummies(X, drop_first=False)
+
+    if request.form.get("model") in list_label_encoder:
+        for column in X.columns:
+            if not is_numeric_dtype(X[column]):
+                le = LabelEncoder()
+                X[column] = le.fit_transform(X[column].astype(str))
+                session["le_X"][column] = list(le.classes_)
 
     # We split the dataset between train and test
     from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split(X, y,
-                                                        test_size=0.2,
-                                                        random_state=0,
-                                                        stratify=y)  # ATTENTION. IF y has at least one class with a unique entry this will return an error
+                                                            test_size=0.2,
+                                                            random_state=42,
+                                                            stratify=y)  # ATTENTION. IF y has at least one class with a unique entry this will return an error
+
     # We normalise
     if request.form.get("model") in list_norm:
         from sklearn.preprocessing import StandardScaler
@@ -288,28 +312,48 @@ def model_parameters():
     signature = inspect.getfullargspec(dic_models[session["model"]])
     list_params = list(zip(signature.args[::-1], signature.defaults[::-1]))
     list_params.sort()
-
     return render_template("choice_model_parameters.html", list_params= list_params, help_model= help_model)
 
 @app.route("/result_model", methods = ["POST"])
 def result_model():
-    X_train = pd.read_csv(session["X_train_path"])
-    X_test = pd.read_csv(session["X_test_path"])
-    y_train = pd.read_csv(session["y_train_path"], names=["target"])
-    y_test = pd.read_csv(session["y_test_path"], names=["target"])
 
-    listo = request.form.getlist("params")
-    #for elem in request.form.getlist("params"):
+    report_train = ""
+    report_test = ""
+    conf_matrix = ""
 
+    X_train = pd.read_csv(session["X_train_path"], index_col = 0)
+    X_test = pd.read_csv(session["X_test_path"], index_col = 0)
+    y_train = pd.read_csv(session["y_train_path"], index_col = 0)
+    y_test = pd.read_csv(session["y_test_path"], index_col = 0)
+
+
+    # We get the parameters and default value for all parameters of the model chosed by user
     signature = inspect.getfullargspec(dic_models[session["model"]])
     dic_params = {}
+
+    # We take all elements of signature except first one which is "self"
     for arg in signature.args[1:]:
-        dic_params[arg] = request.form.get(arg)
+        if request.form.get(arg) in ["True", "False", "None"]:
+            dic_params[arg] = eval(request.form.get(arg))
+        else :
+            # fast_real intelligently converts text into int or float
+            dic_params[arg] = fast_real(request.form.get(arg))
 
     model = dic_models[session["model"]](**dic_params)
-    model.fit(X_train,y_train)
+    model.fit(X_train, y_train)
 
-    return render_template("result_model.html", model = model, X_train = X_train, X_test = X_test, y_train= y_train, y_test = y_test, dic_params=dic_params)
+    #  ------------------   Visualisation / model evaluation --------------------
+
+    if session["model"] in list_classif:
+        report_train = classification_report(y_true= y_train , y_pred= model.predict(X_train), target_names= session["le_y"], output_dict=True)
+        report_train = pd.DataFrame(report_train).to_html()
+        report_test = classification_report(y_true= y_test, y_pred= model.predict(X_test), target_names= session["le_y"], output_dict=True)
+        report_test = pd.DataFrame(report_test).to_html()
+        fig, ax = plt.subplots(figsize=(6, 6))
+        conf_matrix = pd.DataFrame(confusion_matrix(y_true= y_train, y_pred=model.predict(X_train)))
+        conf_mat_graph = sns.heatmap(conf_matrix, annot=True, fmt="d").figure.savefig("../../../../conf_mat.png")
+
+    return render_template("result_model.html", model = model, X_train = X_train, X_test = X_test, y_train= y_train, y_test = y_test, dic_params=dic_params, test = session["le_X"], report_train= report_train, report_test=report_test, conf_matrix=conf_matrix)
 
 @app.route("/test_html", methods = ["POST"])
 def test_html():
