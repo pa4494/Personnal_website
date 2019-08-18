@@ -2,15 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6faba74b-9656-496e-839c-f8de727eec2a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/KMeans_graphs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Unsupervised_ML.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/instance/uploads/X_testA_DEFINIR.csv" beforeDir="false" afterPath="$PROJECT_DIR$/instance/uploads/X_testA_DEFINIR.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/instance/uploads/X_trainA_DEFINIR.csv" beforeDir="false" afterPath="$PROJECT_DIR$/instance/uploads/X_trainA_DEFINIR.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/instance/uploads/y_testA_DEFINIR.csv" beforeDir="false" afterPath="$PROJECT_DIR$/instance/uploads/y_testA_DEFINIR.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/instance/uploads/y_trainA_DEFINIR.csv" beforeDir="false" afterPath="$PROJECT_DIR$/instance/uploads/y_trainA_DEFINIR.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/essaitable.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/instance/uploads/X_testA_DEFINIR.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/instance/uploads/X_trainA_DEFINIR.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/instance/uploads/winequality-red.csv" beforeDir="false" afterPath="$PROJECT_DIR$/instance/uploads/winequality-red.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/instance/uploads/y_testA_DEFINIR.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/instance/uploads/y_trainA_DEFINIR.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/confusion_matrix.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/graph_bivariate.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/images/graph_bivariate.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/graph_univariate.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/images/graph_univariate.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/choice_model_parameters.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/choice_model_parameters.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/result_model.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/result_model.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/winequality-red.csv" beforeDir="false" afterPath="$PROJECT_DIR$/winequality-red.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/supervised_ML.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/upload.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,16 +28,16 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="vertical" split-proportion="0.7262136">
+    <splitter split-orientation="vertical" split-proportion="0.1506647">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="34">
-                  <caret line="290" column="4" selection-start-line="290" selection-start-column="4" selection-end-line="290" selection-end-column="4" />
+                <state relative-caret-position="3">
+                  <caret line="97" column="16" selection-start-line="97" selection-start-column="16" selection-end-line="97" selection-end-column="16" />
                   <folding>
-                    <element signature="e#0#30#0" expanded="true" />
+                    <element signature="e#0#112#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -37,8 +46,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/templates/result_model.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="256">
-                  <caret line="16" selection-start-line="16" selection-end-line="16" />
+                <state relative-caret-position="736">
+                  <caret line="46" column="41" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
                 </state>
               </provider>
             </entry>
@@ -46,35 +55,47 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/templates/choice_model_parameters.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="48">
-                  <caret line="6" column="111" selection-start-line="6" selection-start-column="111" selection-end-line="6" selection-end-column="111" />
+                <state relative-caret-position="256">
+                  <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/supervised_ML.html">
+            <entry file="file://$PROJECT_DIR$/KMeans_graphs.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="48">
-                  <caret line="3" column="93" selection-start-line="3" selection-start-column="64" selection-end-line="3" selection-end-column="93" />
+                <state relative-caret-position="56">
+                  <caret line="82" column="44" selection-start-line="80" selection-start-column="7" selection-end-line="82" selection-end-column="44" />
+                  <folding>
+                    <element signature="e#0#34#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/bivariate.html">
+            <entry file="file://$PROJECT_DIR$/templates/upload.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="229">
-                  <caret line="24" column="55" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="55" />
+                <state relative-caret-position="416">
+                  <caret line="26" column="31" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="67" />
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/univariate.html">
+            <entry file="file://$PROJECT_DIR$/templates/model_selection.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="53">
-                  <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
+                <state relative-caret-position="832">
+                  <caret line="52" column="63" selection-start-line="52" selection-start-column="63" selection-end-line="52" selection-end-column="63" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/notes.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="32">
+                  <caret line="2" selection-start-line="2" selection-end-line="2" />
                 </state>
               </provider>
             </entry>
@@ -83,16 +104,7 @@
             <entry file="file://$PROJECT_DIR$/templates/layout_visualisation.html">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="112">
-                  <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/upload.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="192">
-                  <caret line="12" column="82" selection-start-line="12" selection-start-column="82" selection-end-line="12" selection-end-column="82" />
+                  <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
                 </state>
               </provider>
             </entry>
@@ -118,14 +130,14 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="107">
-                  <caret line="352" column="100" selection-start-line="352" selection-start-column="100" selection-end-line="352" selection-end-column="100" />
+                <state relative-caret-position="240">
+                  <caret line="555" column="70" selection-start-line="555" selection-start-column="70" selection-end-line="555" selection-end-column="70" />
                   <folding>
-                    <element signature="e#0#30#0" expanded="true" />
+                    <element signature="e#0#112#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -138,43 +150,43 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>tab</find>
-      <find>max</find>
-      <find>dic_var</find>
-      <find>dic_gr</find>
-      <find>set</find>
-      <find>list_</find>
-      <find>block</find>
-      <find>nb_ro</find>
-      <find>coun</find>
-      <find>count</find>
-      <find>X</find>
-      <find>dic</find>
+      <find>static</find>
+      <find>dataset</find>
+      <find>unsu</find>
       <find>dic_models</find>
-      <find>dataset.dr</find>
-      <find>true</find>
-      <find>redirect</find>
+      <find>savefig</find>
+      <find>== 2</find>
+      <find>len</find>
+      <find>feature sp</find>
+      <find>silouhette</find>
+      <find>g</find>
       <find>save</find>
-      <find>os.</find>
-      <find>IP_address</find>
-      <find>is_num</find>
-      <find>dataset.drop(column, axis=1, inplace=True)</find>
-      <find>{{column</find>
-      <find>column</find>
-      <find>model</find>
-      <find>help</find>
-      <find>list_para</find>
-      <find>result_model</find>
-      <find>getlist</find>
-      <find>zip</find>
-      <find>help_model</find>
+      <find>supervis</find>
+      <find>unsupervised</find>
+      <find>type_model</find>
+      <find>session[&quot;type_model&quot;]</find>
+      <find>nb_col</find>
+      <find>nb_cols</find>
+      <find>savefi</find>
+      <find>scaler</find>
+      <find>import</find>
+      <find>standard</find>
+      <find>std_scaler</find>
+      <find>to_csv</find>
+      <find>request.form.get(&quot;model&quot;) in list_norm</find>
+      <find>with</find>
+      <find>load</find>
+      <find>load</find>
+      <find>pickle</find>
+      <find>center</find>
+      <find>sav</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -194,12 +206,18 @@
         <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/bivariate.html" />
         <option value="$PROJECT_DIR$/templates/base_layout.html" />
-        <option value="$PROJECT_DIR$/templates/upload.html" />
         <option value="$PROJECT_DIR$/templates/layout_visualisation.html" />
         <option value="$PROJECT_DIR$/choice_model_parameters.html" />
         <option value="$PROJECT_DIR$/templates/bivariate.html" />
         <option value="$PROJECT_DIR$/templates/univariate.html" />
         <option value="$PROJECT_DIR$/templates/supervised_ML.html" />
+        <option value="$PROJECT_DIR$/notes.py" />
+        <option value="$PROJECT_DIR$/templates/Unsupervised_ML.html" />
+        <option value="$PROJECT_DIR$/templates/upload.html" />
+        <option value="$PROJECT_DIR$/templates/unsupervised_ML.html" />
+        <option value="$PROJECT_DIR$/templates/model_selection.html" />
+        <option value="$PROJECT_DIR$/silouhette.py" />
+        <option value="$PROJECT_DIR$/KMeans_graphs.py" />
         <option value="$PROJECT_DIR$/templates/choice_model_parameters.html" />
         <option value="$PROJECT_DIR$/templates/result_model.html" />
         <option value="$PROJECT_DIR$/app.py" />
@@ -207,8 +225,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="557" />
-    <option name="y" value="387" />
+    <option name="x" value="555" />
+    <option name="y" value="385" />
     <option name="width" value="1940" />
     <option name="height" value="1050" />
   </component>
@@ -218,6 +236,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -234,7 +253,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -244,6 +262,9 @@
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\pierr\Desktop\Formations\Training_Programmation\Jedha_Data_scientist_training\Projet_final" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\pierr\Desktop\Formations\Training_Programmation\Jedha_Data_scientist_training\Projet_final\templates" />
     </key>
@@ -259,6 +280,34 @@
         </RuleState>
       </list>
     </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Projet_final" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.app" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -287,6 +336,25 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="1" weight="0.21400264" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Event Log" order="0" sideWeight="0.5006605" side_tool="true" weight="0.07920792" />
+      <window_info anchor="bottom" id="Python Console" order="1" weight="0.32956153" />
+      <window_info anchor="bottom" id="Message" order="2" />
+      <window_info anchor="bottom" id="Find" order="3" weight="0.41442716" />
+      <window_info anchor="bottom" id="Version Control" order="4" />
+      <window_info anchor="bottom" id="Run" order="5" />
+      <window_info anchor="bottom" id="Debug" order="6" weight="0.39886847" />
+      <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="9" weight="0.32956153" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4993395" visible="true" weight="0.16831683" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" weight="0.21664464" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Event Log" order="0" side_tool="true" />
@@ -295,46 +363,18 @@
       <window_info anchor="bottom" id="Find" order="3" />
       <window_info anchor="bottom" id="Version Control" order="4" />
       <window_info anchor="bottom" id="Run" order="5" />
-      <window_info anchor="bottom" id="Debug" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="6" weight="0.39886847" />
       <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="9" weight="0.32956153" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.27157003" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
-    <layout-to-restore>
-      <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.21664464" />
-      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Event Log" order="0" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="1" weight="0.32956153" />
-      <window_info anchor="bottom" id="Message" order="2" />
-      <window_info anchor="bottom" id="Find" order="3" />
-      <window_info anchor="bottom" id="Version Control" order="4" />
-      <window_info anchor="bottom" id="Run" order="5" />
-      <window_info anchor="bottom" id="Debug" order="6" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="9" weight="0.32956153" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.07072136" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.20933522" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout-to-restore>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/essaitable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/essaitable.py" />
     <entry file="file://$PROJECT_DIR$/templates/exploratory_visualisation/analyses.html" />
     <entry file="file://$PROJECT_DIR$/templates/analyses.html" />
     <entry file="file://$PROJECT_DIR$/templates/test_html.html">
@@ -365,45 +405,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Bouts de codes.py">
+    <entry file="file://$PROJECT_DIR$/../environments/env_projet_final/Lib/site-packages/werkzeug/wrappers/base_response.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="12" column="30" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/upload.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="12" column="82" selection-start-line="12" selection-start-column="82" selection-end-line="12" selection-end-column="82" />
+        <state relative-caret-position="5440">
+          <caret line="355" column="30" selection-start-line="355" selection-start-column="25" selection-end-line="355" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/bivariate.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
+        <state relative-caret-position="384">
           <caret line="24" column="55" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="55" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/univariate.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
+        <state relative-caret-position="64">
           <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/supervised_ML.html" />
+    <entry file="file://$PROJECT_DIR$/templates/unsupervised_ML.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="464">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/result_model.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="736">
+          <caret line="46" column="41" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/choice_model_parameters.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/upload.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="26" column="31" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/model_selection.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="832">
+          <caret line="52" column="63" selection-start-line="52" selection-start-column="63" selection-end-line="52" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/notes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/layout_visualisation.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
-          <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/supervised_ML.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="3" column="93" selection-start-line="3" selection-start-column="64" selection-end-line="3" selection-end-column="93" />
+          <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -414,26 +483,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/choice_model_parameters.html">
+    <entry file="file://$PROJECT_DIR$/Bouts de codes.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="6" column="111" selection-start-line="6" selection-start-column="111" selection-end-line="6" selection-end-column="111" />
+        <state relative-caret-position="112">
+          <caret line="12" column="30" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/result_model.html">
+    <entry file="file://$PROJECT_DIR$/KMeans_graphs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="56">
+          <caret line="82" column="44" selection-start-line="80" selection-start-column="7" selection-end-line="82" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="290" column="4" selection-start-line="290" selection-start-column="4" selection-end-line="290" selection-end-column="4" />
+        <state relative-caret-position="240">
+          <caret line="555" column="70" selection-start-line="555" selection-start-column="70" selection-end-line="555" selection-end-column="70" />
           <folding>
-            <element signature="e#0#30#0" expanded="true" />
+            <element signature="e#0#112#0" expanded="true" />
           </folding>
         </state>
       </provider>

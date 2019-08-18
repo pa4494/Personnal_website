@@ -1,19 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-Model : {{model}}
-<p>{{ test }}</p>
-<p> Score on train is {{ model.score(X_train, y_train) }}</p>
-<p> Score on test is  {{ model.score(X_test, y_test) }} </p>
+{% extends "layout_visualisation.html" %}
 
-<h3> Classification report on train </h3>
-<p> {{report_train | safe}}</p>
-<h3> Classification report on test </h3>
-<p> {{report_test | safe}}</p>
-<img src="static/images/confusion_matrix.png">
-</body>
-</html>
+{% block image %}
+    <p> Model : {{model}} </p>
+
+    <a href="{{ path_pickle }}" download>
+        <!-- Add icon library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <!-- Auto width -->
+        <button class="btn"><i class="fa fa-download"></i> Download model </button>
+    </a>
+
+{% if session["type_model"] == "supervised_ML" %}
+    <p> Score on train is {{ model.score(X_train, y_train) }}</p>
+    <p> Score on test is  {{ model.score(X_test, y_test) }} </p>
+
+    {% if is_classifier == True %}
+        <h3> Classification report on train </h3>
+        <p> {{report["train"] | safe}}</p>
+        <h3> Classification report on test </h3>
+        <p> {{report["test"] | safe}}</p>
+        <img src="static/images/confusion_matrix_train.png">
+        <img src="static/images/confusion_matrix_test.png">
+        {% if nb_classes_y ==2 %}
+            <img src="static/images/roc_train.png">
+            <img src="static/images/roc_test.png">
+        {% endif %}
+    {% endif %}
+
+    {% if is_lin_regr == True %}
+        <h3> Feature importance on train </h3>
+        {{ df_feat_rank  | safe}}
+        <h3> Coefficients on train</h3>
+        {{ df_coefs | safe}}
+    {% endif %}
+
+    {% if is_tree == True %}
+    <h3> Decision Tree </h3>
+    <img src="static/images/tree.png" heigth="1000" width = "1000">
+    {% endif %}
+{% endif %}
+
+{% if session["type_model"] == "unsupervised_ML" %}
+
+    <h3> Visualisation clusters </h3>
+    <img src="static/images/clusters.png" width = "1500">
+
+
+{% endif %}
+{% endblock image %}

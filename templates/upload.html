@@ -20,10 +20,12 @@
         {% if session["file_path"] %}
             Else, just pick the section you'd like to go to
             <ul>
-                {% for elem in ["univariate", "bivariate", "supervised_ML"] %}
-
+                {% for elem in ["univariate", "bivariate"] %}
                     <li> <a href= {{url_for(elem) }}> {{elem}} </a>  </li>
+                {% endfor %}
 
+                {% for elem in ["supervised_ML", "unsupervised_ML"] %}
+                    <li> <a href= {{url_for("model_selection", type_model= elem) }}> {{elem}} </a>  </li>
                 {% endfor %}
             </ul>
         {% endif %}

@@ -1,22 +1,28 @@
 {% extends "layout_visualisation.html" %}
 
-	{% block form %}
-        <p> Please adjust model parameters </p>
-            <form method="post" action={{url_for("result_model")}} enctype="multipart/form-data">
-                {% for arg, value in list_params %}
-                <!-- we set up a default random_state avoids results_model to change when page is refreshed -->
-                    {% if arg == "random_state" %}
-                        <p> <input type="text" name="{{arg}}" value="42"> : {{arg}}  </p>
-                    {% else %}
-                        <p> <input type="text" name="{{arg}}" value="{{value}}"> : {{arg}}  </p>
-                    {% endif %}
-                {% endfor %}
-                <input type="submit" value="Validate Selection">
-            </form>
-
-        <h3> Function help and details of arguments </h3>
-        {% for line in help_model %}
-            {{line}} <br>
+{% block form %}
+    <p> Please adjust model parameters </p>
+    <p> Note : you will find below elements to help you set the model parameters </p>
+    <form method="post" action={{url_for("result_model")}} enctype="multipart/form-data">
+        {% for arg, value in list_params %}
+        <!-- we set up a default random_state avoids results_model to change when page is refreshed -->
+        {% if arg == "random_state" %}
+        <p> <input type="text" name="{{arg}}" value="42"> : {{arg}}  </p>
+        {% else %}
+        <p> <input type="text" name="{{arg}}" value="{{value}}"> : {{arg}}  </p>
+        {% endif %}
         {% endfor %}
-
-	{% endblock form %}
+        <input type="submit" value="Validate Selection">
+    </form>
+    {% if len(silhouette_score) > 1 %}
+        <img src="static/images/elbow_graph.png" heigth="500" width = "500">
+        {% for indice in range(len(silhouette_score)) %}
+            <p> {{ silhouette_score[indice] }} </p>
+            <img src="static/images/silhouette_{{indice}}.png" heigth="1000" width = "1000">
+        {% endfor %}
+    {% endif %}
+    <h3> Function help and details of arguments </h3>
+    {% for line in help_model %}
+            {{line}} <br>
+    {% endfor %}
+{% endblock form %}

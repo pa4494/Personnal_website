@@ -1,0 +1,73 @@
+{% extends "layout_visualisation.html" %}
+
+{% block form %}
+    <form method="post" action= {{url_for("model_parameters")}} enctype="multipart/form-data">
+       {% if has_null == True %}
+            Your dataset contains null values. You cannot keep NaN values when using Machine learning algorithms. Here are the details :
+            {% for column in detail_null[detail_null >0].index %}
+                <p> {{column}} has {{detail_null[column]}} null values</p>
+            {% endfor %}
+       {% endif %}
+
+       <h4> Are there any columns you'd like to remove ?</h4>
+       <p> If so, please select columns you would like to remove </p>
+
+       {% for column in dataset.columns %}
+            <p>
+                <input type="checkbox" name=delete value="{{column}}">
+                <label> {{column}} </label>
+            </p>
+       {% endfor %}
+
+       {% if has_null == True %}
+            <h4> How would you like to treat null values ?</h4>
+                <label> Remove rows that contain null values </label>
+                <input type="radio" name=treat_null value="remove_rows" checked>
+                <label> Interpolate </label>
+                <input type="radio" name=treat_null value="interpolate">
+       {% endif %}
+
+        <!-- if model type is supervised, we ask to select target -->
+        {% if type_model == "supervised_ML" %}
+
+        <h4> Please pick target variable </h4>
+        <p> Please note that if target contains at least one value which is unique, "stratify" in train/ test split won't work </p>
+           <select name="target" required>
+                {% for column in dataset.columns %}
+                     <option value="{{column}}">{{column}}</option>
+                {% endfor %}
+           </select>
+        {% endif %}
+
+        {% if type_model == "unsupervised_ML" %}
+         <h4> Please pick two features to show on cluster graphs </h4>
+            <p>
+                <label> Please pick feature for X_axis </label>
+                <select name="X_axis" required>
+                {% for column in dataset.columns %}
+                     <option value="{{column}}">{{column}}</option>
+                {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label> Please pick feature for y_axis </label>
+                <select name="y_axis" required>
+                {% for column in dataset.columns %}
+                     <option value="{{column}}">{{column}}</option>
+                {% endfor %}
+                </select>
+            </p>
+        {% endif %}
+
+        <h4> What model would you like to apply? </h4>
+
+           <select name="model" required>
+                {% for column in dic_models.keys() %}
+                <option value="{{column}}">{{column}}</option>
+                {% endfor %}
+           </select>
+
+           <p> <input type="submit" value="Validate Selection"> </p>
+    </form>
+{% endblock form %}
+
