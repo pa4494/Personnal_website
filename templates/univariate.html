@@ -2,7 +2,11 @@
 
         {% block form %}
             <form method="post" action={{request.path}} enctype="multipart/form-data">
-                <h4> Please pick the type of graphs you would like to show </h4>
+                <b> Please pick the type of graphs you would like to show: </b>
+                <br>
+                <i> <font size="-1">Please note Distplot option is disabled for categorical variables </font> </i>
+                <br>
+                <br>
                 {% for column in dataset.columns %}
 
                 <!-- We want to prevent the user to use Distplot which won't work on non numeric variables -->
@@ -13,16 +17,24 @@
                 {% endif %}
 
                 <p>
-                    <input type="radio" name="{{column}}" value="none" checked>
-                    <label for="None">None </label>
-                    <input type="radio" name="{{column}}" value="distplot" {{ disabled | safe}} >
-                    <label for="Distplot" {{ disabled | safe}} >Distplot</label>
-                    <input type="radio" name="{{column}}" value="countplot">
-                    <label for="Countplot">Countplot</label>
+                    <label class="container"> None
+                        <input type="radio" name="{{column}}" value="none" checked>
+                        <span class="checkmark"></span>
+                    </label>
+                     <label class="container" {{ disabled | safe}} >
+                         Distplot
+                        <input type="radio" name="{{column}}" value="distplot" {{ disabled | safe}} >
+                        <span class="checkmark"></span>
+                     </label>
+                    <label class="container">
+                        Countplot
+                        <input type="radio" name="{{column}}" value="countplot">
+                        <span class="checkmark"></span>
+                    </label>
                     <label> | --  {{column}} - ({{dataset[column].dtype}}) </label>
                 </p>
             {% endfor %}
-            <p> <input type="submit" value="Validate Selection"> </p>
+            <p> <input class="btn btn-info" type="submit" value="Validate Selection"> </p>
 	        </form>
         {% endblock form %}
 

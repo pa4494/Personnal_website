@@ -2,34 +2,48 @@
 
     {% block form %}
         <form method="post" action={{request.path}} enctype="multipart/form-data">
-        <p>
-            <label for graph_type> Choose graph type </label>
-                <select name="graph_type" required>
+            <div class="dropdown">
+               <label for graph_type> Choose graph type :
+               <select class="btn btn-secondary dropdown-toggle" name="graph_type" required>
                     {% for graph in dic_func.keys() %}
                         <option value="{{graph}}">{{graph}}</option>
                     {% endfor %}
                 </select>
-        </p>
-
-        <label for var_x_1> x axis vars | </label> <label for var_y_1> y axis vars |
+                </label>
+            </div>
+        <div> Please choose up to 7 var-x and up to 7 var_y. <br>
+        After validating your selection this app will generate for each var_x selected a graph vs. each var_y selected. <br>
+        For exemple, if 2 var_x and 3 var_y are selected, the app will generate 2x3 = 6 graphs. <br>
+        </div>
 
         {% set required = "" %}
+        {% set selected = "" %}
         {% for nb_row in range(nb_options) %}
             {% if nb_row == 0 %}
                 {% set required = "required" %}
             {% endif %}
-            <p>
+            <div class="dropdown">
                 {% for var in ["var_x_","var_y_"] %}
-                    <select name="{{var}}{{nb_row}}" {{required}}>
-                        <option selected></option>
-                        {% for column in dataset.columns %}
-                        <option value="{{column}}">{{column}}</option>
-                        {% endfor %}
+                <label> {{var + str(nb_row+1)}}
+                <select class="btn btn-secondary dropdown-toggle" name="{{var}}{{nb_row}}" {{required}}>
+                    <option selected></option>
+                    {% for column in dataset.columns %}
+                    <!-- if the method is POST then we want user choice of column to remain selected -->
+                        {% if request.method == "POST" %}
+                            {% if request.form.get(var+str(nb_row)) == column %}
+                                {% set selected = "selected" %}
+                            {% else %}
+                                {% set selected = "" %}
+                            {% endif %}
+                        {% endif %}
+                        <option value="{{column}}" {{selected}}>{{column}}</option>
+                    {% endfor %}
                     </select>
+                </label>
                 {% endfor %}
-            </p>
+            </div>
          {% endfor %}
-         <p> <input type="submit" value="Validate Selection"> </p>
+         <p> <input class="btn btn-info" type="submit" value="Validate Selection"> </p>
 	    </form>
     {% endblock form %}
 

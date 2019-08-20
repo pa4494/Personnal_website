@@ -1,32 +1,40 @@
 {% extends "base_layout.html" %}
 
-    {% block content %}
+    {% block body %}
         {% if session["file_path"] %}
-            <p> The following csv file is currently uploaded : "{{name_file(session["file_path"])}}" </p>
-            {{table_head | safe}}
-            <p> If you'd like to replace it by a new csv file, please upload a new file using form below </p>
+<div> The following csv file is currently uploaded : <b><u> "{{name_file(session["file_path"])}}" </u></b> </div>
+            <div class="table table-dark"> {{table_head | safe}} </div>
+            <p> If you'd like to replace it by a new csv file, please upload a new file using form below. Else just go to the section of your choice </p>
         {% endif %}
 
         <!-- Form to load a csv file -->
         <form method="post" action={{request.path}} enctype="multipart/form-data">
-            <label for="dataset"> Choose a csv file: </label>
-            <input type="file" id="dataset" name="csv_file" accept=".csv" required>
-            <p>
-            <input type="submit" value="Upload File">
-            </p>
+            <div>
+                <label> Please pick csv file on your machine </label>
+                <br>
+                <input type="file" id="dataset" name="csv_file" accept=".csv" required>
+            </div>
+            <br>
+            <div>
+                <label> Then please click to upload csv file to the website </label>
+                <br>
+                <input type="submit" value="Upload File">
+            </div>
+            <br>
         </form>
 
         <!-- if a file has already been loaded, we show links to the pages to play with the data -->
         {% if session["file_path"] %}
-            Else, just pick the section you'd like to go to
+            <b> Sections </b>
+            <br>
             <ul>
                 {% for elem in ["univariate", "bivariate"] %}
-                    <li> <a href= {{url_for(elem) }}> {{elem}} </a>  </li>
+                    <li> <a href= {{url_for(elem) }}> {{elem.capitalize()}} </a>  </li>
                 {% endfor %}
 
                 {% for elem in ["supervised_ML", "unsupervised_ML"] %}
-                    <li> <a href= {{url_for("model_selection", type_model= elem) }}> {{elem}} </a>  </li>
+                    <li> <a href= {{url_for("model_selection", type_model= elem) }}> {{elem.capitalize()}} </a>  </li>
                 {% endfor %}
             </ul>
         {% endif %}
-    {% endblock content %}
+    {% endblock body %}

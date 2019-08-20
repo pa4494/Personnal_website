@@ -1,7 +1,13 @@
-{% extends "layout.html" %}
+{% extends "base_layout.html" %}
 
-{% block content %}
+{% block body %}
 
+	<div class="intro">
+		<br> This website all started as a school project and is the result of many hours a Data Science training at <a href="https://jedha.co"> Jedha Bootcamp </a>
+		<br> You will find several sections in this website
+	</div>
+
+	<ul class="unorder_list"
 	<!-- List of hyperlinks to each page of our website -->
 	{%
 	set list_hyperlinks = [
@@ -15,6 +21,6 @@
 	{% endfor %}
 	</ul>
 		
-{% endblock content %}
+{% endblock body %}
 
 

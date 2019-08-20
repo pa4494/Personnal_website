@@ -17,9 +17,9 @@
 
     {% if is_classifier == True %}
         <h3> Classification report on train </h3>
-        <p> {{report["train"] | safe}}</p>
+        <div class="table table-dark"> {{report["train"] | safe}}</div>
         <h3> Classification report on test </h3>
-        <p> {{report["test"] | safe}}</p>
+        <div class="table table-dark"> {{report["test"] | safe}}</div>
         <img src="static/images/confusion_matrix_train.png">
         <img src="static/images/confusion_matrix_test.png">
         {% if nb_classes_y ==2 %}
@@ -30,9 +30,9 @@
 
     {% if is_lin_regr == True %}
         <h3> Feature importance on train </h3>
-        {{ df_feat_rank  | safe}}
+        <div class="table table-dark"> {{ df_feat_rank  | safe}} </div>
         <h3> Coefficients on train</h3>
-        {{ df_coefs | safe}}
+        <div class="table table-dark"> {{ df_coefs | safe}} </div>
     {% endif %}
 
     {% if is_tree == True %}

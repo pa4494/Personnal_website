@@ -1,23 +1,17 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title> The Data Scientist tool - {{name}} </title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-		<meta http-equiv="Pragma" content="no-cache">
-		<meta http-equiv="Expires" content="0">
-	</head>
-	<body>
+{% extends "base_layout.html" %}
+{% block body %}
 
-    <p> The current file uploaded is : "{{name_file(session["file_path"])}}" </p>
-    <p> {{table_head | safe }}</p>
+    {% if session["file_path"] %}
+    <div> The following csv file is currently uploaded : <b><u> "{{name_file(session["file_path"])}}" </u></b> </div>
+    <div class="table table-dark"> {{table_head | safe}} </div>
+    <p> If you'd like to replace it by a new csv file, please <a href={{ url_for("upload")}}> upload a new file </a> </p>
+    {% endif %}
 
-    <!-- app.py redirect automatically to upload page if no csv file has been uploaded
-         Here we will create the form to choose column in the dataset to draw univariate graph from -->
+	<!-- app.py redirect automatically to upload page if no csv file has been uploaded
+	Here we will create the form to choose column in the dataset to draw univariate graph from -->
 
 	{% block form %}
 	{% endblock form %}
-
 
 	{% if request.method == "POST" %}
 		{% block image %}
@@ -27,10 +21,9 @@
 	<figure>
 	<figcaption> Code </figcaption>
 			<code>
-    {% block code %}
-    {% endblock code %}
+	{% block code %}
+	{% endblock code %}
 			</code>
 	</figure>
 
-	</body>
-</html>
+{% endblock body %}

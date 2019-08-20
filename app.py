@@ -1,6 +1,7 @@
 from flask import Flask, url_for, render_template, send_file, request, redirect, jsonify, session, make_response
 import matplotlib.pyplot as plt
 import matplotlib
+
 matplotlib.use('Agg')
 from werkzeug import secure_filename
 from pandas.api.types import is_numeric_dtype
@@ -40,22 +41,21 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
-
-dic_supervised_models = {"Linear_Regression" : LinearRegression,
-                          "Logistic_Regression" : LogisticRegression,
-                          "Lasso_Regression" : Lasso,
-                          "Ridge_Regression" : Ridge,
-                          "Decision_Tree_Regressor" : DecisionTreeRegressor,
-                          "Random_Forest_Regressor": RandomForestRegressor,
-                          "Decision_Tree_Classifier" : DecisionTreeClassifier,
-                          "Random_Forest_Classifier" : RandomForestClassifier,
-                          "Gaussian_Naive_bayes" : GaussianNB,
-                          "Support_Vector_Machine" : SVC
-                          }
+dic_supervised_models = {"Linear_Regression": LinearRegression,
+                         "Logistic_Regression": LogisticRegression,
+                         "Lasso_Regression": Lasso,
+                         "Ridge_Regression": Ridge,
+                         "Decision_Tree_Regressor": DecisionTreeRegressor,
+                         "Random_Forest_Regressor": RandomForestRegressor,
+                         "Decision_Tree_Classifier": DecisionTreeClassifier,
+                         "Random_Forest_Classifier": RandomForestClassifier,
+                         "Gaussian_Naive_bayes": GaussianNB,
+                         "Support_Vector_Machine": SVC
+                         }
 
 dic_unsupervised_models = {"KMeans": KMeans,
                            "MiniBatchKMeans": MiniBatchKMeans,
-                           "DBSCAN" : DBSCAN
+                           "DBSCAN": DBSCAN
                            }
 
 list_label_encoder = ["Decision_Tree_Regressor",
@@ -68,15 +68,15 @@ list_dummy_drop_true = ["Linear_Regression",
                         "Lasso_Regression",
                         "Ridge_Regression"]
 
-list_dummy_drop_false =["Gaussian_Naive_bayes",
-                        "Support_Vector_Machine",
-                        "KMeans",
-                        "MiniBatchKMeans",
-                        "DBSCAN"]
+list_dummy_drop_false = ["Gaussian_Naive_bayes",
+                         "Support_Vector_Machine",
+                         "KMeans",
+                         "MiniBatchKMeans",
+                         "DBSCAN"]
 
 list_norm = ["Logistic_Regression",
-             "Lasso_Regression" ,
-             "Ridge_Regression" ,
+             "Lasso_Regression",
+             "Ridge_Regression",
              "Support_Vector_Machine",
              "KMeans",
              "DBSCAN"]
@@ -97,8 +97,8 @@ list_tree = ["Decision_Tree_Classifier",
 list_KMeans = ["KMeans",
                "MiniBatchKMeans"]
 
-# ---------  Unsupervised ML models --------------
 
+# ---------  Unsupervised ML models --------------
 
 
 # Functions we want to use in html template using jinja2
@@ -106,7 +106,9 @@ list_KMeans = ["KMeans",
 def utility_processor():
     def name_file(file_path):
         return Path(file_path).stem
-    return dict(name_file=name_file, is_numeric= is_numeric_dtype, len = len, min = min, str=str, type = type)
+
+    return dict(name_file=name_file, is_numeric=is_numeric_dtype, len=len, min=min, str=str, type=type, capitalize=str.capitalize)
+
 
 # Indicates we do not want cache memory (Graphs are saved and shown as images. If not set, web app does not update graphs after form submission)
 @app.after_request
@@ -114,15 +116,17 @@ def add_header(response):
     response.cache_control.max_age = 0
     return response
 
+
 # Home page
 @app.route("/")
-def index():
-    return render_template("index.html")
+def home():
+    return render_template("index.html", name="Welcome to the Data Scientist Website!")
+
 
 # Page the user is redirected to if no csv file has been uploaded and he is trying to access analysis pages
-@app.route("/upload", methods = ["GET", "POST"])
-def upload() :
-# Page that allows user to upload data. If data has already been loaded for the session, the page shows the data and the file name
+@app.route("/upload", methods=["GET", "POST"])
+def upload():
+    # Page that allows user to upload data. If data has already been loaded for the session, the page shows the data and the file name
 
     table_head = {}
     if request.method == "POST":
@@ -133,30 +137,31 @@ def upload() :
 
     # If a file_path session variable already exists, we take head(10) and convert it to html to then show it on the page
     if session.get("file_path"):
-        table_head = pd.read_csv(session["file_path"]).head(10).to_html()
-    return render_template("upload.html", table_head = table_head)
+        table_head = pd.read_csv(session["file_path"]).head(5).to_html()
+    return render_template("upload.html", name="Upload", table_head=table_head)
+
 
 # page to allow user to create univariate plots from the csv file
-@app.route("/univariate_exploratory", methods = ["GET", "POST"])
+@app.route("/univariate_exploratory", methods=["GET", "POST"])
 def univariate():
     dic_graphs = {}
-    #dic_types = {}
+    # dic_types = {}
     nb_graphs = 0
     code = "<p> # Import all relevant libraries </p>"
 
     # If no csv file has been uploaded, we redirect to the upload page
     if not session.get("file_path"):
         return redirect(url_for("upload"))
-    else :
+    else:
         dataset = pd.read_csv(session["file_path"])
-        code+="<p> dataset = pd.read_csv({})</p>".format(Path(session["file_path"]).name)
-        table_head = dataset.head(10).to_html()
+        code += "<p> dataset = pd.read_csv({})</p>".format(Path(session["file_path"]).name)
+        table_head = dataset.head(5).to_html()
 
         if request.method == "POST":
 
             # Dictionnary containing graph functions associated with radio buttons
-            dic_func = {"distplot" : sns.distplot,
-                        "countplot" : sns.countplot}
+            dic_func = {"distplot": sns.distplot,
+                        "countplot": sns.countplot}
 
             # After user submits button radio form with choice of variable to plot on graph, each of the radio button's value becomes a dictionary key and to each key is associated
             # a list of the column names the user wants to plot
@@ -165,10 +170,11 @@ def univariate():
 
             # We create a subplots figures that automatically resize based on the number of graphs we want to show
             nb_columns = 3
-            graphs_to_show = len(dataset.columns) - len(dic_graphs.get("none",[]))
-            nb_rows = int(graphs_to_show/nb_columns -0.0000001) + 1
+            graphs_to_show = len(dataset.columns) - len(dic_graphs.get("none", []))
+            nb_rows = int(graphs_to_show / nb_columns - 0.0000001) + 1
             width_fig = 14
-            f, axis = plt.subplots(nrows = nb_rows, ncols = nb_columns, figsize=(width_fig, width_fig/nb_columns*nb_rows))
+            f, axis = plt.subplots(nrows=nb_rows, ncols=nb_columns,
+                                   figsize=(width_fig, width_fig / nb_columns * nb_rows))
             ax = list(axis.flat)
 
             # For all the columns that the user wants to see a graph, we plot a graph based on the radio button's value
@@ -176,25 +182,28 @@ def univariate():
                 if key != "none":
                     for column in dic_graphs.get(key):
                         dic_func[key](dataset[column].dropna(), ax=ax[nb_graphs])
-                        nb_graphs+=1
-                        code+="<P> sns.{}(dataset[{}]))</P>".format(dic_func[key].__name__,column)
+                        nb_graphs += 1
+                        code += "<P> sns.{}(dataset[{}]))</P>".format(dic_func[key].__name__, column)
 
             # We save the figure containing all the graph
-            f.savefig('static/images/graph_univariate.png')
+            f.savefig('static/images/graph_univariate.png', bbox_inches="tight")
             plt.close("all")
 
-        response = make_response(render_template("univariate.html", dataset = dataset, table_head = table_head, dic_graphs = dic_graphs, nb_graphs = nb_graphs, code = code))
+        response = make_response(
+            render_template("univariate.html", name= "Univariate Analysis", dataset=dataset, table_head=table_head, dic_graphs=dic_graphs,
+                            nb_graphs=nb_graphs, code=code))
         return response
+
 
 # Page to allow user to create bivariate plots from csv file. Can choose several x-axis variables and y-axis variables and choose a graph type.
 # The algorithm will then create for each x a graph with all y, with graph type chosen by user
-@app.route("/bivariate_exploratory", methods = ["GET", "POST"])
+@app.route("/bivariate_exploratory", methods=["GET", "POST"])
 def bivariate():
     dic_graphs = {}
     nb_graphs = 0
     nb_options = 0
-    x_list =[]
-    y_list =[]
+    x_list = []
+    y_list = []
     code = "<p> # Import all relevant libraries </p>"
 
     # Dictionnary containing graph functions associated with drop-down list
@@ -204,10 +213,10 @@ def bivariate():
     # If no csv file has been uploaded, we redirect to the upload page
     if not session.get("file_path"):
         return redirect(url_for("upload"))
-    else :
+    else:
         dataset = pd.read_csv(session["file_path"])
-        code+="<p> dataset = pd.read_csv({})</p>".format(Path(session["file_path"]).name)
-        table_head = dataset.head(10).to_html()
+        code += "<p> dataset = pd.read_csv({})</p>".format(Path(session["file_path"]).name)
+        table_head = dataset.head(5).to_html()
         nb_options = min(7, len(dataset.columns))
 
         if request.method == "POST":
@@ -227,36 +236,41 @@ def bivariate():
             # We create a subplots figures that automatically resize based on the number of graphs we want to show
             nb_columns = 3
             graphs_to_show = len(x_list) * len(y_list)
-            nb_rows = int(graphs_to_show/nb_columns -0.0000001) + 1
+            nb_rows = int(graphs_to_show / nb_columns - 0.0000001) + 1
             width_fig = 12
-            f, axis = plt.subplots(nrows = nb_rows, ncols = nb_columns, figsize=(width_fig, width_fig/nb_columns*nb_rows))
+            f, axis = plt.subplots(nrows=nb_rows, ncols=nb_columns,
+                                   figsize=(width_fig, width_fig / nb_columns * nb_rows))
             ax = list(axis.flat)
 
             # For all the columns that the user wants to see a graph, we plot a graph based on the radio button's value
             graph_choice = dic_func[request.form.get("graph_type")]
 
-            for x in x_list :
+            for x in x_list:
                 for y in y_list:
-                    graph_choice(x = x, y=y, data=dataset.dropna(), ax=ax[nb_graphs])
-                    nb_graphs+=1
-                    code+="<P> sns.{graph_choice}(x = {x}, y={y}, data=dataset]))</P>".format(graph_choice = graph_choice.__name__, x=x, y=y)
+                    graph_choice(x=x, y=y, data=dataset.dropna(), ax=ax[nb_graphs])
+                    nb_graphs += 1
+                    code += "<P> sns.{graph_choice}(x = {x}, y={y}, data=dataset]))</P>".format(
+                        graph_choice=graph_choice.__name__, x=x, y=y)
 
             # We save the figure containing all the graph
-            f.savefig('static/images/graph_bivariate.png')
+            f.savefig('static/images/graph_bivariate.png', bbox_inches="tight")
             plt.close("all")
 
-        response = make_response(render_template("bivariate.html", dataset = dataset, nb_options = nb_options, table_head = table_head, dic_graphs = dic_graphs, dic_func= dic_func, nb_graphs = nb_graphs, code = code))
+        response = make_response(
+            render_template("bivariate.html", name="Bivariate Analysis", dataset=dataset, nb_options=nb_options, table_head=table_head,
+                            dic_graphs=dic_graphs, dic_func=dic_func, nb_graphs=nb_graphs, code=code))
         return response
 
-# based
-@app.route('/models/<type_model>/', methods= ["GET", "POST"])
-def model_selection(type_model):
 
-    code =""
-    table_head=""
+# based
+@app.route('/models/<type_model>/', methods=["GET", "POST"])
+def model_selection(type_model):
+    code = ""
+    table_head = ""
     template = ""
     has_null = False
     dic_models = {}
+    name=""
 
     # If no csv file has been uploaded, we redirect to the upload page
     if not session.get("file_path"):
@@ -271,23 +285,27 @@ def model_selection(type_model):
         dataset = pd.read_csv(session["file_path"])
         detail_null = dataset.isnull().sum()
         if sum(detail_null) > 0:
-            has_null =True
+            has_null = True
 
-        code+="<p> dataset = pd.read_csv({})</p>".format(Path(session["file_path"]).name)
-        table_head = dataset.head(10).to_html()
+        code += "<p> dataset = pd.read_csv({})</p>".format(Path(session["file_path"]).name)
+        table_head = dataset.head(5).to_html()
 
     if type_model == "supervised_ML":
         dic_models = dic_supervised_models
+        name = "Selection supervised model"
+
     if type_model == "unsupervised_ML":
         dic_models = dic_unsupervised_models
+        name = "Selection unsupervised model"
 
-    return render_template("model_selection.html", type_model = type_model, dataset = dataset, table_head = table_head, has_null = has_null, detail_null = detail_null, dic_models = dic_models)
+    return render_template("model_selection.html", name=name, type_model=type_model, dataset=dataset, table_head=table_head,
+                           has_null=has_null, detail_null=detail_null, dic_models=dic_models)
 
-@app.route("/params", methods = ["POST"])
+
+@app.route("/params", methods=["POST"])
 def model_parameters():
-
     session["model"] = request.form.get("model")
-    IP_address_user= request.remote_addr
+    IP_address_user = request.remote_addr
     dataset = pd.read_csv(session["file_path"])
     help_model = ""
     session["le_y"] = ""
@@ -298,7 +316,7 @@ def model_parameters():
     y_test = ""
     dic_models = {}
     stratify = None
-    silhouette_score=[]
+    silhouette_score = []
 
     # We delete columns based on user's choice
     for column in request.form.getlist("delete"):
@@ -311,14 +329,14 @@ def model_parameters():
         dataset.interpolate(method="nearest", inplace=True)
 
     # If model_type is "supervised", we split dataset between X and y and make sure y is numerical. Else X = dataset
-    if session["type_model"] == "supervised_ML" :
+    if session["type_model"] == "supervised_ML":
 
         dic_models = dic_supervised_models
-        y = pd.DataFrame(dataset[request.form.get("target")], columns= [request.form.get("target")])
+        y = pd.DataFrame(dataset[request.form.get("target")], columns=[request.form.get("target")])
         X = dataset.drop(request.form.get("target"), axis=1)
 
         # We make sure target is expressed as a number
-        if not is_numeric_dtype(y.iloc[:,0]):
+        if not is_numeric_dtype(y.iloc[:, 0]):
             le = LabelEncoder()
             y = pd.DataFrame(le.fit_transform(y.astype(str)), columns=y.columns)
             path = os.path.join(uploads_dir, "Label_encoder_y" + IP_address_user + ".data")
@@ -337,7 +355,7 @@ def model_parameters():
         X = pd.get_dummies(X, drop_first=True)
 
     if request.form.get("model") in list_dummy_drop_false:
-        X =pd.get_dummies(X, drop_first=False)
+        X = pd.get_dummies(X, drop_first=False)
 
     if request.form.get("model") in list_label_encoder:
         for column in X.columns:
@@ -357,7 +375,7 @@ def model_parameters():
         from sklearn.model_selection import train_test_split
         # if y has at least one value which is unique, we do not stratify
         if y.iloc[:, 0].value_counts().min() >= 2:
-           stratify = y
+            stratify = y
         X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                             test_size=0.3,
                                                             random_state=42,
@@ -366,22 +384,22 @@ def model_parameters():
         if request.form.get("model") in list_norm:
             from sklearn.preprocessing import StandardScaler
             sc_X = StandardScaler()
-            X_train = pd.DataFrame(sc_X.fit_transform(X_train), columns= X_train.columns)
-            X_test = pd.DataFrame(sc_X.transform(X_test), columns = X_test.columns)
+            X_train = pd.DataFrame(sc_X.fit_transform(X_train), columns=X_train.columns)
+            X_test = pd.DataFrame(sc_X.transform(X_test), columns=X_test.columns)
 
         # We save a version of X and y with user IP address in each file name (to allow several users to use the tool at the same time)
         for data, name in [(X_train, "X_train_"), (X_test, "X_test_"), (y_train, "y_train_"),
                            (y_test, "y_test_")]:
-            path = os.path.join(uploads_dir, name + IP_address_user +".csv")
+            path = os.path.join(uploads_dir, name + IP_address_user + ".csv")
             data.to_csv(path)
-            session[name+"path"] = path
+            session[name + "path"] = path
 
     if session["type_model"] == "unsupervised_ML":
         # We normalise when needed
         if request.form.get("model") in list_norm:
             from sklearn.preprocessing import StandardScaler
             sc_X = StandardScaler()
-            X = pd.DataFrame(sc_X.fit_transform(X), columns= X.columns)
+            X = pd.DataFrame(sc_X.fit_transform(X), columns=X.columns)
             # We save the model to de-normalize before putting on graphs
             path_std_scaler = os.path.join("static/models/", "normalisation_model_" + request.remote_addr + ".pkl")
             joblib.dump(sc_X, path_std_scaler)
@@ -396,14 +414,15 @@ def model_parameters():
         if session["model"] in list_KMeans:
             from KMeans_graphs import elbow_graph
             elbow_graph = elbow_graph(X)
-            elbow_graph.savefig("static/images/elbow_graph.png")
+            elbow_graph.savefig("static/images/elbow_graph.png", bbox_inches="tight")
             plt.close("all")
 
             from KMeans_graphs import silhouette
-            silhouette, silhouette_score = silhouette(X, X_axis = request.form.get("X_axis"), y_axis = request.form.get("y_axis"))
+            silhouette, silhouette_score = silhouette(X, X_axis=request.form.get("X_axis"),
+                                                      y_axis=request.form.get("y_axis"))
             i = 0
             for figure in silhouette:
-                figure.savefig(f"static/images/silhouette_{i}.png")
+                figure.savefig(f"static/images/silhouette_{i}.png", bbox_inches="tight")
                 i += 1
             plt.close("all")
 
@@ -412,11 +431,12 @@ def model_parameters():
     # signature.args include self as first element whereas signature.defaults does not. Hence taking [::-1] takes every pair defacto excluding self
     list_params = list(zip(signature.args[::-1], signature.defaults[::-1]))
     list_params.sort()
-    return render_template("choice_model_parameters.html", list_params= list_params, help_model= help_model, silhouette_score=silhouette_score)
+    return render_template("choice_model_parameters.html", name="Choice of model parameters", list_params=list_params, help_model=help_model,
+                           silhouette_score=silhouette_score)
 
-@app.route("/result_model", methods = ["GET","POST"])
+
+@app.route("/result_model", methods=["GET", "POST"])
 def result_model():
-
     dic_models = {}
     report = {}
     conf_matrix = ""
@@ -425,16 +445,23 @@ def result_model():
     is_tree = False
     df_coefs = ""
     df_feat_rank = ""
-    X_train = pd.read_csv(session["X_train_path"], index_col = 0)
-    X_test = pd.read_csv(session["X_test_path"], index_col = 0)
-    y_train = pd.read_csv(session["y_train_path"], index_col = 0)
-    y_test = pd.read_csv(session["y_test_path"], index_col = 0)
-    X_unsupervised = pd.read_csv(session["X_unsupervised_path"], index_col=0)
-    nb_classes_y = len(y_train.iloc[:, 0].unique())
+    X_train = ""
+    X_test = ""
+    y_train = ""
+    y_test = ""
+    nb_classes_y = ""
+    X_unsupervised = ""
     if session["type_model"] == "supervised_ML":
         dic_models = dic_supervised_models
+        X_train = pd.read_csv(session["X_train_path"], index_col=0)
+        X_test = pd.read_csv(session["X_test_path"], index_col=0)
+        y_train = pd.read_csv(session["y_train_path"], index_col=0)
+        y_test = pd.read_csv(session["y_test_path"], index_col=0)
+        nb_classes_y = len(y_train.iloc[:, 0].unique())
     elif session["type_model"] == "unsupervised_ML":
         dic_models = dic_unsupervised_models
+        X_unsupervised = pd.read_csv(session["X_unsupervised_path"], index_col=0)
+
     # We get the parameters and default value for all parameters of the model chosed by user
     signature = inspect.getfullargspec(dic_models[session["model"]])
     dic_params = {}
@@ -443,7 +470,7 @@ def result_model():
     for arg in signature.args[1:]:
         if request.form.get(arg) in ["True", "False", "None"]:
             dic_params[arg] = eval(request.form.get(arg))
-        else :
+        else:
             # fast_real intelligently converts text into text, int or float,
             dic_params[arg] = fast_real(request.form.get(arg))
 
@@ -463,17 +490,17 @@ def result_model():
             if not is_numeric_dtype(y_train.iloc[:, 0]):
                 with open(session["le_y_path"], 'rb') as filehandle:
                     le_y = pickle.load(filehandle)
-            else :
+            else:
                 le_y = None
 
             for X, y, name in [(X_train, y_train, "train"), (X_test, y_test, "test")]:
-
                 # We create a classification report for train and test
-                report[name] = classification_report(y_true= y , y_pred= model.predict(X), target_names= le_y, output_dict=True)
+                report[name] = classification_report(y_true=y, y_pred=model.predict(X), target_names=le_y,
+                                                     output_dict=True)
                 report[name] = pd.DataFrame(report[name]).to_html()
 
                 # We create a confusion matrix for train and test
-                conf_matrix = pd.DataFrame(confusion_matrix(y_true= y, y_pred=model.predict(X)))
+                conf_matrix = pd.DataFrame(confusion_matrix(y_true=y, y_pred=model.predict(X)))
                 akws = {"ha": 'center', "va": "center"}
                 graph_train = sns.heatmap(conf_matrix, annot=True, fmt="d", annot_kws=akws)
                 plt.title(name)
@@ -481,11 +508,11 @@ def result_model():
                 plt.close("all")
 
             # if y is binary, we create a ROC curve graph
-            if nb_classes_y == 2 :
+            if nb_classes_y == 2:
                 from sklearn.metrics import roc_auc_score
                 from sklearn.metrics import roc_curve
 
-                for X, y, name in [(X_train, y_train,"train"), (X_test, y_test, "test")] :
+                for X, y, name in [(X_train, y_train, "train"), (X_test, y_test, "test")]:
                     # Roc curve on test
                     logit_roc_auc = roc_auc_score(y, model.predict(X))
                     fpr, tpr, thresholds = roc_curve(y, model.predict_proba(X)[:, 1])
@@ -507,13 +534,14 @@ def result_model():
 
             # We show coefficient of the model associated to each feature
             df_coefs = pd.DataFrame(index=X_train.columns, data=model.coef_.transpose(), columns=["coefficients"])
-            df_coefs = df_coefs.sort_values(by = "coefficients", ascending = False).to_html()
+            df_coefs = df_coefs.sort_values(by="coefficients", ascending=False).to_html()
 
             # We show f-score and p-value of each feature
             from sklearn.feature_selection import f_regression
             feature_importance = f_regression(X_train, y_train)
             df_feat_rank = pd.DataFrame(columns=X_train.columns, data=feature_importance,
-                                        index=["f-score", "p-value"]).transpose().sort_values(["f-score", "p-value"], ascending=False)
+                                        index=["f-score", "p-value"]).transpose().sort_values(["f-score", "p-value"],
+                                                                                              ascending=False)
             df_feat_rank = df_feat_rank.to_html()
 
         # if model is a tree we generate a png representation of that tree
@@ -523,43 +551,46 @@ def result_model():
             from sklearn.tree import export_graphviz
             from subprocess import check_call
 
-            graph_tree = export_graphviz(model, out_file="static/images/tree.dot", node_ids="box", feature_names=X_train.columns)
+            graph_tree = export_graphviz(model, out_file="static/images/tree.dot", node_ids="box",
+                                         feature_names=X_train.columns)
             check_call(['dot', '-Tpng', "static/images/tree.dot", '-o', 'static/images/tree.png'], shell=True)
 
     # if model type is "unsupervised" generate a graph for all combination of 2 features and show in which cluster they belong
 
-    if session["type_model"] == "unsupervised_ML" :
+    if session["type_model"] == "unsupervised_ML":
         model = dic_models[session["model"]](**dic_params)
         model.fit(X_unsupervised)
         # for better clarity before showing clusters on graph we de-normalise the dataset
         if session["model"] in list_norm:
-            #with open(session["path_std_scaler"], 'wb') as filehandle:
+            # with open(session["path_std_scaler"], 'wb') as filehandle:
             std_scaler = joblib.load(session["path_std_scaler"])
             X_unsupervised = pd.DataFrame(std_scaler.inverse_transform(X_unsupervised), columns=X_unsupervised.columns)
             path = os.path.join(uploads_dir, f"check=konX.csv")
-            #X.to_csv(path)
+            # X.to_csv(path)
 
-        nb_graphs = int(1/2*len(X_unsupervised.columns)*(len(X_unsupervised.columns)-1))
+        nb_graphs = int(1 / 2 * len(X_unsupervised.columns) * (len(X_unsupervised.columns) - 1))
         nb_columns = 6
         nb_rows = int(nb_graphs / nb_columns - 0.0000001) + 1
         width_fig = 24
         fig, axis = plt.subplots(nrows=nb_rows, ncols=nb_columns, figsize=(width_fig, width_fig / nb_columns * nb_rows))
         ax = list(axis.flat)
-        for x in range(len(X_unsupervised.columns)-1):
-            for y in np.arange(x+1,len(X_unsupervised.columns)):
-                nb_graphs-=1
-                sns.scatterplot(x=X_unsupervised.iloc[:,x], y=X_unsupervised.iloc[:,y], data=X_unsupervised, hue=model.labels_, ax=ax[nb_graphs], legend = "full")
+        for x in range(len(X_unsupervised.columns) - 1):
+            for y in np.arange(x + 1, len(X_unsupervised.columns)):
+                nb_graphs -= 1
+                sns.scatterplot(x=X_unsupervised.iloc[:, x], y=X_unsupervised.iloc[:, y], data=X_unsupervised,
+                                hue=model.labels_, ax=ax[nb_graphs], legend="full")
                 # if model is part of the KMeans group we plot centroids as well
                 if session["model"] in list_KMeans:
                     centers = model.cluster_centers_
                     if session["model"] in list_norm:
                         centers = std_scaler.inverse_transform(centers)
-                    ax[nb_graphs].scatter(centers[:,x], centers[:,y], marker='o', c="white", alpha=1, s=200, edgecolor='k')
+                    ax[nb_graphs].scatter(centers[:, x], centers[:, y], marker='o', c="white", alpha=1, s=200,
+                                          edgecolor='k')
                     for i, c in enumerate(centers):
                         ax[nb_graphs].scatter(c[x], c[y], marker='$%d$' % i, alpha=1, s=50, edgecolor='k')
 
-                   # coords_centers = pd.DataFrame(coords_centers, columns=X_unsupervised.columns)
-                    #sns.scatterplot(x=coords_centers.iloc[:,x], y=coords_centers.iloc[:,y], data=coords_centers, s=80, ax=ax[nb_graphs], legend="full", label="centroids",  )
+                # coords_centers = pd.DataFrame(coords_centers, columns=X_unsupervised.columns)
+                # sns.scatterplot(x=coords_centers.iloc[:,x], y=coords_centers.iloc[:,y], data=coords_centers, s=80, ax=ax[nb_graphs], legend="full", label="centroids",  )
         fig.savefig("static/images/clusters.png", bbox_inches="tight")
         plt.close("all")
 
@@ -568,29 +599,11 @@ def result_model():
     path_pickle = os.path.join("static/models/", session["model"] + request.remote_addr + ".pkl")
     joblib.dump(model, path_pickle)
 
-    return render_template("result_model.html", model = model, X_train = X_train, X_test = X_test, y_train= y_train, y_test = y_test, path_pickle = path_pickle,
-                           dic_params=dic_params, report= report, is_classifier=is_classifier, is_lin_regr= is_lin_regr, nb_classes_y=nb_classes_y, is_tree = is_tree,
-                           df_coefs=df_coefs, df_feat_rank= df_feat_rank)
-
-@app.route("/test_html", methods = ["POST"])
-def test_html():
-    var = "on est dans get"
-    if request.method == "POST":
-        if "choose" in request.form :
-            var = "vous avez choisi choose"
-        else:
-            var = "vous avez uploade"
-
-    return render_template('test_html.html', var = var)
+    return render_template("result_model.html",name = "Model result and assessment", model=model, X_train=X_train, X_test=X_test, y_train=y_train,
+                           y_test=y_test, path_pickle=path_pickle,
+                           dic_params=dic_params, report=report, is_classifier=is_classifier, is_lin_regr=is_lin_regr,
+                           nb_classes_y=nb_classes_y, is_tree=is_tree,
+                           df_coefs=df_coefs, df_feat_rank=df_feat_rank)
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
-
-
-
-
-
