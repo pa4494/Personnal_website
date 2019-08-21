@@ -82,20 +82,20 @@
 		<ul>
 			<li><h6> Data Visualization </h6></li>
 			<ul>
-				<li> Univariate Analysis </li>
-				<li> Bivariate Analysis </li>
+				<li> <a href={{url_for("univariate")}}> Univariate Analysis </a> </li>
+				<li> <a href={{url_for("bivariate")}}> Bivariate Analysis </a> </li>
 			</ul>
 			<li><h6> Machine Learning Models </h6></li>
 			<ul>
-				<li> Supervised Models </li>
-				<li> Unsupervised Models </li>
+				<li> <a href={{url_for("model_selection", type_model="supervised_ML") }} > Supervised Models </a> </li>
+				<li> <a href={{url_for("model_selection", type_model="unsupervised_ML") }}> Unsupervised Models </a> </li>
 			</ul>
 			<li><h6> Applied ML exemples </h6></li>
 			<ul>
+				<li> <a href={{url_for("projects",name_project="frauds")}} target="_blank"> Detect online fraud with feature engineering </a></li>
 				<li> <a href={{url_for("projects",name_project="conversion_rate")}} target="_blank"> Website conversion rate optimisation with Trees</a> </li>
 				<li> <a href={{url_for("projects",name_project="referral_program")}} target="_blank"> Assess the impact of a referral campaing </a></li>
 				<li> <a href={{url_for("projects",name_project="uber_pickup")}} target="_blank"> Help Uber manage its fleet with Clusterisation </a></li>
-				<li> <a href={{url_for("projects",name_project="frauds")}} target="_blank"> Detect online fraud with feature engineering </a></li>
 			</ul>
 		 </ul>
 		</div>

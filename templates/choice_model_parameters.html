@@ -6,11 +6,11 @@
     <form method="post" action={{url_for("result_model")}} enctype="multipart/form-data">
         {% for arg, value in list_params %}
         <!-- we set up a default random_state avoids results_model to change when page is refreshed -->
-        {% if arg == "random_state" %}
-        <p> <input type="text" name="{{arg}}" value="42"> : {{arg}}  </p>
-        {% else %}
-        <p> <input type="text" name="{{arg}}" value="{{value}}"> : {{arg}}  </p>
-        {% endif %}
+            {% if arg == "random_state" %}
+            <p> <input type="text" name="{{arg}}" value="42"> : {{arg}}  </p>
+            {% else %}
+            <p> <input type="text" name="{{arg}}" value="{{value}}"> : {{arg}}  </p>
+            {% endif %}
         {% endfor %}
         <input class="btn btn-info" type="submit" value="Validate Selection">
     </form>

@@ -1,0 +1,20 @@
+{% extends "base_layout.html" %}
+
+{% block body %}
+<br>
+
+<div> You will find below a list of jupyter notebooks that I created to address different issues that data visualisation and machine learning
+    can help tackle. I've tried my best to populate my work with comments and indications for reader to easily follow my thought process and understand
+    the differents steps taken. If you are not too familiar with Python or code in general, please note that you can just focus on plain explanation and outputs.
+</div> <br>
+
+<ul>
+    <li> <a href={{url_for("projects",name_project="frauds")}} target="_blank"> Detect online fraud with feature engineering </a></li>
+    <li> <a href={{url_for("projects",name_project="conversion_rate")}} target="_blank"> Website conversion rate optimisation with Trees</a> </li>
+    <li> <a href={{url_for("projects",name_project="referral_program")}} target="_blank"> Assess the impact of a referral campaing </a></li>
+    <li> <a href={{url_for("projects",name_project="uber_pickup")}} target="_blank"> Help Uber manage its fleet with Clusterisation </a></li>
+</ul>
+
+{% endblock body %}
+
+

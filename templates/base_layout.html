@@ -26,6 +26,9 @@
                     <a class="nav-link active" href= {{url_for("model_selection", type_model= elem) }}> {{elem.capitalize()}} </a>
                 </li>
             {% endfor %}
+            <li class=""nav-item">
+                <a class="nav-link active" href={{url_for("projects_list")}}> Project Exemples </a>
+            </li>
         </ul>
     </nav>
     <div class="content">

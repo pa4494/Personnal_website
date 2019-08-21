@@ -607,7 +607,11 @@ def result_model():
                            nb_classes_y=nb_classes_y, is_tree=is_tree,
                            df_coefs=df_coefs, df_feat_rank=df_feat_rank)
 
-@app.route("/projets/<name_project>")
+@app.route("/projects_list/")
+def projects_list():
+    return render_template("projects_list.html", name="List of Projects Exemples")
+
+@app.route("/projects/<name_project>")
 def projects(name_project):
     if name_project not in ["conversion_rate","uber_pickup","frauds","referral_program"]:
         return redirect(url_for("upload"))
