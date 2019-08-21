@@ -503,7 +503,9 @@ def result_model():
                 conf_matrix = pd.DataFrame(confusion_matrix(y_true=y, y_pred=model.predict(X)))
                 akws = {"ha": 'center', "va": "center"}
                 graph_train = sns.heatmap(conf_matrix, annot=True, fmt="d", annot_kws=akws)
-                plt.title(name)
+                plt.title(f"Confusion Matrix - {name} set")
+                plt.xlabel('Predicted')
+                plt.ylabel('True')
                 graph_train.figure.savefig(f"static/images/confusion_matrix_{name}.png", bbox_inches="tight")
                 plt.close("all")
 
@@ -523,7 +525,7 @@ def result_model():
                     plt.ylim([-0.05, 1.05])
                     plt.xlabel('False Positive Rate')
                     plt.ylabel('True Positive Rate')
-                    plt.title(f'Roc curve {name}')
+                    plt.title(f'Roc curve - {name} set')
                     plt.legend(loc="lower right")
                     plt.savefig(f"static/images/roc_{name}.png", bbox_inches="tight")
                     plt.close("all")
@@ -604,6 +606,13 @@ def result_model():
                            dic_params=dic_params, report=report, is_classifier=is_classifier, is_lin_regr=is_lin_regr,
                            nb_classes_y=nb_classes_y, is_tree=is_tree,
                            df_coefs=df_coefs, df_feat_rank=df_feat_rank)
+
+@app.route("/projets/<name_project>")
+def projects(name_project):
+    if name_project not in ["conversion_rate","uber_pickup","frauds","referral_program"]:
+        return redirect(url_for("upload"))
+    else:
+        return render_template(f"project_{name_project}.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

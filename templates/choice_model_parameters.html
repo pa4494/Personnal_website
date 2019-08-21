@@ -12,14 +12,22 @@
         <p> <input type="text" name="{{arg}}" value="{{value}}"> : {{arg}}  </p>
         {% endif %}
         {% endfor %}
-        <input type="submit" value="Validate Selection">
+        <input class="btn btn-info" type="submit" value="Validate Selection">
     </form>
     {% if len(silhouette_score) > 1 %}
-        <img src="static/images/elbow_graph.png" heigth="500" width = "500">
-        {% for indice in range(len(silhouette_score)) %}
-            <p> {{ silhouette_score[indice] }} </p>
-            <img src="static/images/silhouette_{{indice}}.png" heigth="1000" width = "1000">
-        {% endfor %}
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <img src="static/images/elbow_graph.png" heigth="500" width = "500"><br>
+                </div>
+                <div class="col">
+                    {% for indice in range(len(silhouette_score)) %}
+                        <p><b><u> {{ silhouette_score[indice] }} </u></b></p>
+                        <img src="static/images/silhouette_{{indice}}.png" heigth="1000" width = "1000">
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     {% endif %}
     <h3> Function help and details of arguments </h3>
     {% for line in help_model %}

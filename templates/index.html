@@ -2,25 +2,106 @@
 
 {% block body %}
 
-	<div class="intro">
-		<br> This website all started as a school project and is the result of many hours a Data Science training at <a href="https://jedha.co"> Jedha Bootcamp </a>
-		<br> You will find several sections in this website
+	<div class="text-justify">
+		<br> This website all started as a school project and is the result of many hours a Data Science training at <a href="https://jedha.co"> Jedha Bootcamp. </a>
+		Over the course of this bootcamp, through a subtil mix of advanced theory and hands on real world projects, we dived deeply into the wide world of Python based data sciences.
+		In particular we were trained on the following technologies and techniques :
 	</div>
+		<br>
+		<div class="container-fluid ">
+			<div class="row">
+				<div class="col float-left">
+					<ul>
+						<li><h6> Data exploration and visualisation </h6> </li>
+						<ul>
+							<li> Matplotlib </li>
+							<li> Numpy </li>
+							<li> Pandas </li>
+							<li> Seaborn</li>
+						</ul>
+						<li><h6> Supervised Machine Learning </h6></li>
+						<ul>
+							<li> Linear Regressions </li>
+							<li> Logistic Regressions </li>
+							<li> Cross Validation </li>
+							<li> Ridge and Lasso Regressions </li>
+							<li> Classifier and Regressor Trees </li>
+							<li> Random Forests </li>
+							<li> Naive Bayes </li>
+							<li> SVM </li>
+							<li> Adaboost and XGboost </li>
+						</ul>
+						<li><h6> Unsupervised Machine Learning </h6></li>
+						<ul>
+							<li> KMeans </li>
+							<li> DBSCAN </li>
+						</ul>
+					</ul>
+				</div>
+				<div class="col">
+					<ul>
+						<li><h6> Deep Learning </h6></li>
+						<ul>
+							<li> Gradient descent and loss minimisation theory </li>
+							<li> FastAI </li>
+							<li> Tensorflow 2.0 </li>
+							<li> Convolutional Neural Networks </li>
+							<li> NLP and LSTM </li>
+							<li> Transfer Learning </li>
+							<li> Custom training </li>
+						</ul>
+						<li><h6> API and web scrapping </h6></li>
+						<ul>
+							<li> BeautifulSoup </li>
+							<li> API handling </li>
+							<li> Flask </li>
+						</ul>
+						<li><h6> Cloud Computing and Spark </h6></li>
+						<ul>
+							<li> Big data and parallel computing </li>
+							<li> Spark SQL </li>
+							<li> Machine Learning with Spark </li>
+							<li> Recommendation engine with Spark </li>
+						</ul>
+					</ul>
+				</div>
+					<div class="col">
+					<img src="static/images/logo_jedha.png" height="450" width="450">
+				</div>
+			</div>
+		</div>
 
-	<ul class="unorder_list"
-	<!-- List of hyperlinks to each page of our website -->
-	{%
-	set list_hyperlinks = [
-	"upload"
-	]
-	%}
-	
-	<ul>
-	{% for i in list_hyperlinks %}
-		<li><a href="{{url_for(i)}}"> {{i}} </a> </li>
-	{% endfor %}
-	</ul>
-		
+
+		<div class="text-justify"> The purpose of this website is to offer simple to use tools to allow users with minimal coding experience and an interest
+		in Data Science to manipulate powerful data visualisation techniques and generate machine learning models in just a few clicks.
+		To do so, I invite you to start by uploading a CSV file of your choice in the <a href={{url_for("upload") }}>  Upload section </a>.
+		Once this is done you will have access to the following tools:
+		</div> <br>
+
+		<div>
+		<ul>
+			<li><h6> Data Visualization </h6></li>
+			<ul>
+				<li> Univariate Analysis </li>
+				<li> Bivariate Analysis </li>
+			</ul>
+			<li><h6> Machine Learning Models </h6></li>
+			<ul>
+				<li> Supervised Models </li>
+				<li> Unsupervised Models </li>
+			</ul>
+			<li><h6> Applied ML exemples </h6></li>
+			<ul>
+				<li> <a href={{url_for("projects",name_project="conversion_rate")}} target="_blank"> Website conversion rate optimisation with Trees</a> </li>
+				<li> <a href={{url_for("projects",name_project="referral_program")}} target="_blank"> Assess the impact of a referral campaing </a></li>
+				<li> <a href={{url_for("projects",name_project="uber_pickup")}} target="_blank"> Help Uber manage its fleet with Clusterisation </a></li>
+				<li> <a href={{url_for("projects",name_project="frauds")}} target="_blank"> Detect online fraud with feature engineering </a></li>
+			</ul>
+		 </ul>
+		</div>
+
+<div class="text-center"><a href={{url_for("upload")}}><button class="btn btn-info align-center" type="button" >Get Started NOW! </button></a> </div>
+
 {% endblock body %}
 
 

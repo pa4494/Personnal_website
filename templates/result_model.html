@@ -12,27 +12,56 @@
     </a>
 
 {% if session["type_model"] == "supervised_ML" %}
-    <p> Score on train is {{ model.score(X_train, y_train) }}</p>
-    <p> Score on test is  {{ model.score(X_test, y_test) }} </p>
+<p> Score on train is <b>{{ model.score(X_train, y_train) }}</b></p>
+<p> Score on test is  <b>{{ model.score(X_test, y_test) }}</b></p>
 
-    {% if is_classifier == True %}
-        <h3> Classification report on train </h3>
-        <div class="table table-dark"> {{report["train"] | safe}}</div>
-        <h3> Classification report on test </h3>
-        <div class="table table-dark"> {{report["test"] | safe}}</div>
-        <img src="static/images/confusion_matrix_train.png">
-        <img src="static/images/confusion_matrix_test.png">
+     {% if is_classifier == True %}
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h3> Classification report on train </h3>
+                    <div class="table table-dark"> {{report["train"] | safe}}</div>
+                </div>
+                <div class="col">
+                    <h3> Classification report on test </h3>
+                    <div class="table table-dark"> {{report["test"] | safe}}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <img class="float-left" src="static/images/confusion_matrix_train.png">
+                </div>
+                <div class="col">
+                    <img class="float-left" src="static/images/confusion_matrix_test.png">
+                </div>
+            </div>
         {% if nb_classes_y ==2 %}
-            <img src="static/images/roc_train.png">
-            <img src="static/images/roc_test.png">
+            <div class="row">
+                <div class="col">
+                    <img src="static/images/roc_train.png">
+                </div>
+                <div class="col">
+                    <img src="static/images/roc_test.png">
+                </div>
+            </div>
+        </div>
         {% endif %}
+        </div>
     {% endif %}
 
     {% if is_lin_regr == True %}
-        <h3> Feature importance on train </h3>
-        <div class="table table-dark"> {{ df_feat_rank  | safe}} </div>
-        <h3> Coefficients on train</h3>
-        <div class="table table-dark"> {{ df_coefs | safe}} </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <h3> Feature importance on train </h3>
+                    <div class="table table-dark"> {{ df_feat_rank  | safe}} </div>
+                </div>
+                <div class="col-sm">
+                    <h3> Coefficients on train</h3>
+                    <div class="table table-dark"> {{ df_coefs | safe}} </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
 
     {% if is_tree == True %}
@@ -42,10 +71,7 @@
 {% endif %}
 
 {% if session["type_model"] == "unsupervised_ML" %}
-
     <h3> Visualisation clusters </h3>
     <img src="static/images/clusters.png" width = "1500">
-
-
 {% endif %}
 {% endblock image %}

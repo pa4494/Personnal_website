@@ -6,7 +6,14 @@
                <label for graph_type> Choose graph type :
                <select class="btn btn-secondary dropdown-toggle" name="graph_type" required>
                     {% for graph in dic_func.keys() %}
-                        <option value="{{graph}}">{{graph}}</option>
+                         {% if request.method == "POST" %}
+                            {% if request.form.get("graph_type") == graph %}
+                                {% set selected = "selected" %}
+                            {% else %}
+                                {% set selected = "" %}
+                            {% endif %}
+                        {% endif %}
+                        <option value="{{graph}}" {{selected}}>{{graph}}</option>
                     {% endfor %}
                 </select>
                 </label>

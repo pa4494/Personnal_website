@@ -1,14 +1,14 @@
 {% extends "layout_visualisation.html" %}
 
 {% block form %}
-    <form method="post" action= {{url_for("model_parameters")}} enctype="multipart/form-data">
+    <div method="post" action= {{url_for("model_parameters")}} enctype="multipart/form-data">
        {% if has_null == True %}
-            Your dataset contains null values. You cannot keep NaN values when using Machine learning algorithms. Here are the details :
+        <b> Your dataset contains null values.</b> You cannot keep NaN values when using Machine learning algorithms. Here are the details : <br>
             {% for column in detail_null[detail_null >0].index %}
-                <p> {{column}} has {{detail_null[column]}} null values</p>
+                <span> &#8226; {{column}} has {{detail_null[column]}} null values</span> <br>
             {% endfor %}
        {% endif %}
-
+        <br>
        <h4> Are there any columns you'd like to remove ?</h4>
        <p> If so, please select columns you would like to remove </p>
 
@@ -20,11 +20,18 @@
        {% endfor %}
 
        {% if has_null == True %}
-            <h4> How would you like to treat null values ?</h4>
-                <label> Remove rows that contain null values </label>
-                <input type="radio" name=treat_null value="remove_rows" checked>
-                <label> Interpolate </label>
-                <input type="radio" name=treat_null value="interpolate">
+            <h4> How would you like to treat null values ? </h4>
+                Remove rows that contain null values
+                <label class="container">
+                    <input type="radio" name=treat_null value="remove_rows" checked>
+                    <span class="checkmark"></span>
+                </label>
+                Interpolate
+                <label class="container">
+                    <input type="radio" name=treat_null value="interpolate">
+                    <span class="checkmark"></span>
+                </label> <br> <br>
+
        {% endif %}
 
         <!-- if model type is supervised, we ask to select target -->
@@ -32,7 +39,7 @@
 
         <h4> Please pick target variable </h4>
         <p> Please note that if target contains at least one value which is unique, "stratify" in train/ test split won't work </p>
-           <select name="target" required>
+           <select class="btn btn-secondary dropdown-toggle" name="target" required>
                 {% for column in dataset.columns %}
                      <option value="{{column}}">{{column}}</option>
                 {% endfor %}
@@ -43,7 +50,7 @@
          <h4> Please pick two features to show on cluster graphs </h4>
             <p>
                 <label> Please pick feature for X_axis </label>
-                <select name="X_axis" required>
+                <select class="btn btn-secondary dropdown-toggle" name="X_axis" required>
                 {% for column in dataset.columns %}
                      <option value="{{column}}">{{column}}</option>
                 {% endfor %}
@@ -51,7 +58,7 @@
             </p>
             <p>
                 <label> Please pick feature for y_axis </label>
-                <select name="y_axis" required>
+                <select class="btn btn-secondary dropdown-toggle" name="y_axis" required>
                 {% for column in dataset.columns %}
                      <option value="{{column}}">{{column}}</option>
                 {% endfor %}
@@ -61,13 +68,13 @@
 
         <h4> What model would you like to apply? </h4>
 
-           <select name="model" required>
+           <select class="btn btn-secondary dropdown-toggle" name="model" required>
                 {% for column in dic_models.keys() %}
                 <option value="{{column}}">{{column}}</option>
                 {% endfor %}
            </select>
 
-           <p> <input type="submit" value="Validate Selection"> </p>
+           <p> <input class="btn btn-info" type="submit" value="Validate Selection"> </p>
     </form>
 {% endblock form %}
 

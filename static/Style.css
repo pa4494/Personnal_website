@@ -38,16 +38,7 @@ a.nav-link:hover {
 
 footer {
     text-align: center;
-}
-
-div {
-    font-family : Calibri;
-    font-size : 16px
-}
-
-p {
-    font-family : Calibri;
-}
+    margin: 0 0 3rem 0;
 
 .table{
     margin: 1rem 0 1rem 0;
@@ -56,7 +47,6 @@ p {
 
 /* The container */
 .container {
-  font-family : Calibri;
   display: inline;
   position: relative;
   padding-left: 35px;
