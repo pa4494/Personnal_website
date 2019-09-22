@@ -1,7 +1,7 @@
 {% extends "layout_visualisation.html" %}
 
 {% block form %}
-    <div method="post" action= {{url_for("model_parameters")}} enctype="multipart/form-data">
+    <form method="post" action= {{url_for("model_parameters")}} enctype="multipart/form-data">
        {% if has_null == True %}
         <b> Your dataset contains null values.</b> You cannot keep NaN values when using Machine learning algorithms. Here are the details : <br>
             {% for column in detail_null[detail_null >0].index %}
@@ -48,11 +48,14 @@
 
         {% if type_model == "unsupervised_ML" %}
          <h4> Please pick two features to show on cluster graphs </h4>
+         <i> <font size="-1"> Please note that only numerical columns can be picked as categorical features will be dummified </font> </i> <br><br>
             <p>
                 <label> Please pick feature for X_axis </label>
                 <select class="btn btn-secondary dropdown-toggle" name="X_axis" required>
                 {% for column in dataset.columns %}
+                    {% if is_numeric(dataset[column]) %}
                      <option value="{{column}}">{{column}}</option>
+                    {% endif %}
                 {% endfor %}
                 </select>
             </p>
@@ -60,7 +63,9 @@
                 <label> Please pick feature for y_axis </label>
                 <select class="btn btn-secondary dropdown-toggle" name="y_axis" required>
                 {% for column in dataset.columns %}
+                    {% if is_numeric(dataset[column]) %}
                      <option value="{{column}}">{{column}}</option>
+                    {% endif %}
                 {% endfor %}
                 </select>
             </p>

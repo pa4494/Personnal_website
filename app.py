@@ -79,6 +79,7 @@ list_norm = ["Logistic_Regression",
              "Ridge_Regression",
              "Support_Vector_Machine",
              "KMeans",
+             "MiniBatchKMeans",
              "DBSCAN"]
 
 list_lin_regr = ["Linear_Regression",
@@ -573,7 +574,7 @@ def result_model():
         nb_graphs = int(1 / 2 * len(X_unsupervised.columns) * (len(X_unsupervised.columns) - 1))
         nb_columns = 6
         nb_rows = int(nb_graphs / nb_columns - 0.0000001) + 1
-        width_fig = 24
+        width_fig = 28
         fig, axis = plt.subplots(nrows=nb_rows, ncols=nb_columns, figsize=(width_fig, width_fig / nb_columns * nb_rows))
         ax = list(axis.flat)
         for x in range(len(X_unsupervised.columns) - 1):

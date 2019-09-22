@@ -1,15 +1,19 @@
 {% extends "layout_visualisation.html" %}
 
 {% block image %}
-    <p> Model : {{model}} </p>
+    <p> Characteristics of model : {{model}} </p>
+
+    <div class="text-center">
 
     <a href="{{ path_pickle }}" download>
         <!-- Add icon library -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- Auto width -->
-        <button class="btn"><i class="fa fa-download"></i> Download model </button>
+        <button class="btn btn-primary"><i class="fa fa-download"></i> Download model </button>
     </a>
+    </div>
+
 
 {% if session["type_model"] == "supervised_ML" %}
 <p> Score on train is <b>{{ model.score(X_train, y_train) }}</b></p>
